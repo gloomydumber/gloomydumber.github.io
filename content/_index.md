@@ -11,7 +11,6 @@ footer = false
 name = "Damon Kang"
 id = "gloomydumber"
 bio = "The Principle Of Good Faith."
-avatar = "img/profile_mod.png"
 links = [
     { name = "GitHub", icon = "github", url = "https://github.com/gloomydumber" },
     { name = "Twitter", icon = "twitter", url = "https://twitter.com/kangleaver" },
