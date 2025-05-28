@@ -49,6 +49,22 @@ A better way is to manually call the `approve()` function using Etherscan.
 
 You’ve now successfully approved your token using Etherscan’s Web3 interface.
 
+## The Risk of Infinite Approvals
+
+Approving an "infinite" amount might seem convenient—you don’t have to approve again every time you swap—but there’s a real security risk here.
+
+When you approve a smart contract (like Uniswap’s router) to spend your tokens, you're essentially saying:
+"Hey, this contract can move all of my tokens—whenever it wants."
+
+If that contract is ever hacked or if you accidentally approve a malicious dApp, your tokens could be drained instantly.
+
+So unless you really trust the contract you're interacting with, it’s safer to approve only the amount you need for a single transaction. It’s a little more work, but it dramatically reduces your exposure.
+
+If you're done using a dApp, consider revoking the approval using tools like:
+
+- [https://revoke.cash](https://revoke.cash)
+- [https://etherscan.io/tokenapprovalchecker](https://etherscan.io/tokenapprovalchecker)
+
 ---
 
 ### References
