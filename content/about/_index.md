@@ -1,5 +1,5 @@
 +++
-title = "serene::about"
+title = "gloomydumber::about"
 description = "Demo collections page of zola-theme-serene"
 template = "prose.html"
 
