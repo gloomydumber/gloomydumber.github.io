@@ -5,8 +5,6 @@ date = 2021-01-23
 toc = true
 +++
 
-# Manually Approving ERC20 Tokens on Uniswap
-
 ## "Swap" Unavailable with Zero Token Balance
 
 ![unavailable](img/approveNoAvailable.png)
