@@ -3,6 +3,7 @@ title = "Uniswap: How to Manually Approve ERC20 Tokens"
 date = 2021-01-23
 [extra]
 toc = true
+comment = true
 +++
 
 ## "Swap" Unavailable with Zero Token Balance
