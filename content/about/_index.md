@@ -8,10 +8,10 @@ title = "About"
 subtitle = "gloomydumber"
 +++
 
-Lorem ipsum dolor sit, amet consectetur adipisicing elit. Praesentium, nisi saepe dolor unde iusto dolore nam, vero optio consequuntur repudiandae et! Atque libero expedita laudantium cupiditate, nisi saepe dolor unde iusto dolore nam sit explicabo sequi ipsa! Lorem ipsum dolor sit, amet consectetur adipisicing elit. Atque libero expedita laudantium cupiditate, sit explicabo sequi! Atque libero expedita laudantium cupiditate, sit explicabo sequi ipsa!
+## Gloomydumber Blog
 
-Lorem ipsum dolor sit, amet consectetur adipisicing elit. Atque libero expedita explicabo laudantium cupiditate, nisi saepe dolor unde iusto dolore nam sit explicabo sequi ipsa!
+for studying Computer Science & Engineering, Blockchain and Investments
 
-Atque libero expedita laudantium cupiditate, sit explicabo sequi ipsa! Lorem ipsum dolor sit, amet consectetur adipisicing elit. Atque libero expedita laudantium cupiditate! Lorem ipsum dolor sit, amet consectetur adipisicing elit. Atque libero expedita explicabo laudantium cupiditate, nisi saepe dolor unde iusto dolore nam sit explicabo sequi ipsa!
+### Education
 
-Atque libero expedita laudantium cupiditate, sit explicabo sequi ipsa! Lorem ipsum dolor sit, amet consectetur adipisicing elit. Atque libero expedita laudantium cupiditate!
+- Pusan National University Computer Science & Engineering (minor: Economics)
