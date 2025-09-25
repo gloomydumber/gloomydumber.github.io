@@ -8,10 +8,8 @@ title = "About"
 subtitle = "gloomydumber"
 +++
 
-## Gloomydumber Blog
-
-for studying Computer Science & Engineering, Blockchain and Investments
+Studying Computer Science & Engineering, focused on Blockchain, and active in Investments.
 
 ### Education
 
-- Pusan National University Computer Science & Engineering (minor: Economics)
+- Pusan National University — Computer Science & Engineering (Minor in Economics)
