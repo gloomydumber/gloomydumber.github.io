@@ -1,0 +1,168 @@
+%YAML 1.2
+---
+# http://www.sublimetext.com/docs/syntax.html
+name: Yul
+file_extensions:
+  - yul
+  - yulp
+scope: source.yul
+contexts:
+  main:
+    - match: \/\/.*
+      comment: Comments
+      scope: comment
+    - match: (\/\*)
+      comment: Multiline comments
+      push:
+        - meta_scope: comment
+        - match: (\*\/)
+          pop: true
+    - match: '\b(event|enum)\s+([A-Za-z_]\w*)\b'
+      comment: Events
+      scope: keyword
+      captures:
+        2: entity.name.function
+    - match: '\b(object)\s+(\"[A-Za-z_]\w*\")(?:\s+(is)\s+)?'
+      captures:
+        1: keyword
+        2: string.quoted
+        3: keyword
+      push:
+        - meta_scope: scope
+        - match: '\{'
+          pop: true
+        - match: '\"[A-Za-z_]\w*\"'
+          scope: string.quoted
+        - include: numbers
+    - match: '\b(constructor|error|using|struct|type|modifier|fallback)(\s+[A-Za-z_]\w*)?\b'
+      comment: Structures, function, event definitions
+      scope: keyword
+      captures:
+        2: entity.name.function
+    - match: '\b(function)(\s+[A-Za-z_]\w*)?\b'
+      comment: Structures, function, event definitions
+      scope: keyword
+      captures:
+        2: entity.name.function
+    - match: \.(selector)\b
+      comment: Special treatment for length and .selector
+      captures:
+        1: markup.italic
+    - match: \bthis\b
+      comment: this
+      scope: markup.italic
+    - match: \bsuper\b
+      comment: Special treatment for "super"
+      scope: markup.italic
+    - match: '\b(address(?:\s+payable)?|string|bytes?\d*|int\d*|uint\d*|bool|u?fixed\d+x\d+)\s*(?:\[(\d*)\])?\s*(?:\[(\d*)\])?\s*(?:(indexed|memory|storage|calldata|payable|immutable)?\s*(\b[A-Za-z_]\w*)?\s*)?(?=[,\)\n])'
+      comment: Built-in types function arguments
+      captures:
+        1: constant.language
+        2: constant.numeric
+        3: constant.numeric
+        4: keyword
+        5: variable.parameter
+    - match: '\b(?:(indexed|memory|storage|calldata|payable|immutable)\s*(\b[A-Za-z_]\w*)?\s*)(?=[,\)\n])'
+      comment: Other types function arguments, like structs... but can only detect them if they have a modifier, example -- function witness(instance memory w, instance memory a, instance memory a1, instance memory a1_odd, uint k)
+      captures:
+        1: keyword
+        2: variable.parameter
+    - match: \b(true|false)\b
+      comment: True and false keywords
+      scope: constant.language
+    - match: '\b(address(?:\s*payable)?|string|bytes?\d*|int\d*|uint\d*|bool|u?fixed\d+x\d+)\b(?:(?:\s*\[(\d*)\])?(?:\s*\[(\d*)\])?(?:\s*\[(\d*)\])?\s*((?:private\s|public\s|internal\s|external\s|constant\s|immutable\s|memory\s|storage\s)*)\s*(?:[A-Za-z_]\w*)\s*(\=))?'
+      comment: Variable definitions - bytes data; | uint x = uint(y); BUT also just appearances of basic types anywhere... good example -- "using SafeMath for uint256;"
+      captures:
+        1: constant.language
+        2: constant.numeric
+        3: constant.numeric
+        4: constant.numeric
+        5: keyword
+        6: keyword
+    - match: \b(payable)\s*\(
+      comment: Type conversion payable(...)
+      captures:
+        1: constant.language
+    - match: '\b(from)\s*(?=[\''\"])'
+      comment: import ... from
+      captures:
+        1: keyword
+    - match: '\b(?:[A-Za-z_]\w*)\s+(as)\s+(?:[A-Za-z_]\w*)'
+      comment: 'import {Unauthorized, add as func, Point} from "./Foo.sol";'
+      captures:
+        1: keyword
+    - match: \b(global);
+      comment: import ... from
+      captures:
+        1: keyword
+    - match: \b(var|solidity|constant|pragma\s*(?:experimental|abicoder)?|code|data|hex|import|const|mstruct|mapping|payable|storage|memory|calldata|if|else|for|while|do|break|continue|returns?|try|catch|private|public|pure|view|internal|immutable|external|virtual|override|abstract|suicide|emit|is|throw|revert|assert|require|receive|delete)\b
+      comment: Langauge keywords
+      scope: keyword
+    - include: numbers
+    - match: '\b(0[xX][a-fA-F0-9]+)\b'
+      comment: Hexadecimal
+      scope: constant.numeric
+    - match: (=|:=|!|>|<|\||&|\?|\^|~|\*|\+|\-|\/|\%)
+      comment: Operators
+      scope: keyword.operator
+    - match: (\bhex\b|\bunicode\b)
+      comment: Operators
+      scope: markup.italic
+    - match: \s\:\s
+      comment: Ternary colon
+      scope: keyword.operator
+    - match: \bnow\b
+      comment: Now - it was removed in solidity 0.4 but we still include it because some old contracts use it
+      scope: support.type
+    - match: \b_;
+      comment: modifier placeholder statement
+      scope: keyword
+    - match: '\b(msg|block|tx)\.([A-Za-z_]\w*)\b'
+      comment: msg and block special usage
+      captures:
+        1: support.type
+        2: support.type
+    - match: '\b(abi)\.([A-Za-z_]\w*)\b'
+      comment: abi functions
+      scope: support.type
+    - match: \b(blockhash|gasleft)\s*\(
+      comment: Function call - some special built-in functions
+      captures:
+        1: support.type
+    - match: '\b([A-Za-z_]\w*)(?:\s*\[(\d*)\]\s*)?(?:\s*\[(\d*)\]\s*)?\('
+      comment: 'Function call, also for example - info.factories = new Factory[](factoryAddresses.length);'
+      captures:
+        1: entity.name.function
+        2: constant.numeric
+        3: constant.numeric
+    - match: '(?:\.|(new\s+))([A-Za-z_]\w*)\{'
+      comment: 'Special parameters IWETH(wavaxTokenAddress).deposit{ ... }(); ... new UniswapV3Pool{...}() https://docs.soliditylang.org/en/v0.8.11/control-structures.html#external-function-calls , https://docs.soliditylang.org/en/v0.8.11/control-structures.html#creating-contracts-via-new'
+      captures:
+        1: keyword
+        2: entity.name.function
+    - match: \b(wei|gwei|ether|seconds|minutes|hours|days|weeks)\b
+      comment: Ether and time units
+      captures:
+        1: support.type
+    - match: \bnew\b
+      comment: New
+      scope: keyword
+    - match: \banonymous\b
+      comment: Event
+      scope: keyword
+    - match: \bunchecked\b
+      comment: Unchecked
+      scope: keyword
+    - match: \b(assembly|switch|let|case|default)\b
+      comment: Assembly stuff
+      scope: keyword
+    - match: '([\"].*?[\"])'
+      comment: Strings
+      scope: string.quoted
+    - match: '([\''].*?[\''])'
+      comment: Strings
+      scope: string.quoted
+  numbers:
+    - match: '\b(?:[+-]?\.?\d[\d_eE]*)(?:\.\d+[\deE]*)?\b'
+      comment: Numbers, possibly with scientific notation
+      scope: constant.numeric
