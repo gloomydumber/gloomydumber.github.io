@@ -113,58 +113,6 @@ __UUPSUpgradeable_init();
 3. *Proxy Pattern*의 형태는 여러가지 형태가 있다.
 4. _(본문에는 없지만)_ 구현 간에 *delegate call*을 이용한다.
 
-## Yul Test
-
-```yul
-{
-    let x := 0
-    let y := add(x, 2)
-    sstore(0, y)
-}
-```
-
-```yul
-{
-    function addTwice(a, b) -> result {
-        let sum := add(a, b)
-        result := add(sum, sum)
-    }
-
-    let r := addTwice(3, 5)
-    sstore(0, r)
-}
-```
-
-```yul
-{
-    let n := calldataload(0)
-
-    if eq(n, 0) {
-        revert(0, 0)
-    }
-
-    switch n
-    case 1 {
-        sstore(0, 100)
-    }
-    case 2 {
-        sstore(0, 200)
-    }
-    default {
-        sstore(0, 999)
-    }
-}
-```
-
-```yul
-{
-    let size := calldatasize()
-    let ptr := mload(0x40)
-    calldatacopy(ptr, 0, size)
-    return(ptr, size)
-}
-```
-
 ## References
 
 - [post about upgradable Smart Contract on moralis.io](https://moralis.io/what-are-upgradable-smart-contracts-full-guide/)
