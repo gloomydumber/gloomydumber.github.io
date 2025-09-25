@@ -66,7 +66,7 @@ comment = true
 
 이 지점에서, *업그레이드 가능한 스마트 컨트랙트*가 무엇인지, 어떻게 동작하는지 이해하고, 두개의 주요한 proxy pattern 유형에 대해서 알아보았다. 그러므로, 독자는 이제 *업그레이드 가능한 스마트 컨트랙트*를 구성하기에 준비되었다 할 수 있다. 게다가, 앞서 언급했듯이 우리는 처음부터 코드를 다 짤필요가 없다. *Openzepplin*의 implementation을 사용할 수 있기 때문이다. 즉, 우리는 프록시 패턴을 우리 스스로 구현할 필요는 없다는 의미다. 이하는 *업그레이드 가능한 스마트 컨트랙트*를 구성하기 위한 단계들이다.
 
-① 먼저, 우리는 _initializable_ 컨트랙트를 상속해야한다.
+1. 먼저, 우리는 _initializable_ 컨트랙트를 상속해야한다.
 
 ```solidity
 contract ExampleCOntractName is initializable {}
@@ -78,13 +78,13 @@ contract ExampleCOntractName is initializable {}
 contract ExampleContractName is initializable, UUPSUpgradable {}
 ```
 
-② 다음으로, *constructor*를 *initializer*로 바꾸어야할 필요가 있다. 즉, *constructor(){}*를 *function initialize() public initializer {}*로 바꾸어야한다. 함수 이름이 *initialize*일 필요는 없으나, 끝의 _initializer {}_ 부분은 필수적이다.
+2. 다음으로, *constructor*를 *initializer*로 바꾸어야할 필요가 있다. 즉, *constructor(){}*를 *function initialize() public initializer {}*로 바꾸어야한다. 함수 이름이 *initialize*일 필요는 없으나, 끝의 _initializer {}_ 부분은 필수적이다.
 
-③ 그리고, _OpenZeppelin_ 컨트랙트 라이브러리를 _upgradable_ 버전으로 바꿔줘야한다.
+3. 그리고, _OpenZeppelin_ 컨트랙트 라이브러리를 _upgradable_ 버전으로 바꿔줘야한다.
 
 ![05](img/05.png)
 
-④ _initialize_ 함수에서, *upgradable contracts*의 함수인 *\_init*을 다음과 같이 호출해야한다.
+4. _initialize_ 함수에서, *upgradable contracts*의 함수인 *\_init*을 다음과 같이 호출해야한다.
 
 ```solidity
 function initialize() initializer public {
@@ -94,7 +94,7 @@ __UUPSUpgradeable_init();
 }
 ```
 
-⑤ 마지막으로, *msg.sender*를 *\_msgSender()*로 대체한다. proxy address가 아닌, 유저의 wallet address와 상호작용해야하기 때문이다.
+5. 마지막으로, *msg.sender*를 *\_msgSender()*로 대체한다. proxy address가 아닌, 유저의 wallet address와 상호작용해야하기 때문이다.
 
 ## The main Limitation of Upgradable Smart Contracts
 
@@ -108,17 +108,14 @@ __UUPSUpgradeable_init();
 
 ## TL;DR
 
-① Immutable한 블록체인 환경에서도 *업그레이드 가능한 스마트 컨트랙트*를 배포할 수 있다.
-
-② 그를 위해서 *Proxy Pattern*을 사용하는데, *proxy contract*와 *implementation contract(logic contract)*를 별도로 배포하는 방식이다.
-
-③ *Proxy Pattern*의 형태는 여러가지 형태가 있다.
-
-④ _(본문에는 없지만)_ 구현 간에 *delegate call*을 이용한다.
+1. Immutable한 블록체인 환경에서도 *업그레이드 가능한 스마트 컨트랙트*를 배포할 수 있다.
+2. 그를 위해서 *Proxy Pattern*을 사용하는데, *proxy contract*와 *implementation contract(logic contract)*를 별도로 배포하는 방식이다.
+3. *Proxy Pattern*의 형태는 여러가지 형태가 있다.
+4. _(본문에는 없지만)_ 구현 간에 *delegate call*을 이용한다.
 
 ## References
 
-- [post about upgradable Smart Contract on moralis.io](https://moralis.io/what-are-upgradable-smart-contracts-full-guide/){: target="\_blank"}
-- [youtube video about upgradable Smart Contract on moralis.io](https://www.youtube.com/watch?v=af1i0z0jhkg){: target="\_blank"}
-- [constructor 대신 initializer 함수를 사용하는 이유](https://stackoverflow.com/questions/72475214/solidity-why-use-initialize-function-instead-of-constructor){: target="\_blank"}
-- [medium post about delegate call](https://medium.com/coinmonks/delegatecall-calling-another-contract-function-in-solidity-b579f804178c){: target="\_blank"}
+- [post about upgradable Smart Contract on moralis.io](https://moralis.io/what-are-upgradable-smart-contracts-full-guide/)
+- [youtube video about upgradable Smart Contract on moralis.io](https://www.youtube.com/watch?v=af1i0z0jhkg)
+- [constructor 대신 initializer 함수를 사용하는 이유](https://stackoverflow.com/questions/72475214/solidity-why-use-initialize-function-instead-of-constructor)
+- [medium post about delegate call](https://medium.com/coinmonks/delegatecall-calling-another-contract-function-in-solidity-b579f804178c)
