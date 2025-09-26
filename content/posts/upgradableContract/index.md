@@ -8,7 +8,7 @@ comment = true
 
 # Upgradable Smart Contracts
 
-해당 포스트는 *moralis*의 [_What are Upgradable Smart Contracts? Full Guide_](https://moralis.io/what-are-upgradable-smart-contracts-full-guide/)을 참고하여 Upgradable Contract 개념에 대해 작성한 것 입니다.
+해당 포스트는 _moralis_ 의 [_What are Upgradable Smart Contracts? Full Guide_](https://moralis.io/what-are-upgradable-smart-contracts-full-guide/) 를 기반하여 Upgradable Contract 개념에 대해 작성한 것 입니다.
 
 ## What are Upgradable Smart Contracts? Full Guide
 
@@ -16,23 +16,23 @@ comment = true
 | :------------------------------: |
 | <b>Upgradable Smart Contract</b> |
 
-{% warning(title="Warning") %} 우선, _Upgradable Smart Contract_ 에 대해서 이해하려면, 블록체인 개발의 기본 및 [_Delegate Call_](https://docs.soliditylang.org/en/v0.8.30/introduction-to-smart-contracts.html#delegatecall-and-libraries) 이라는 개념부터 완전히 이해해야한다. {% end %}
+{% warning(title="Warning") %} _Upgradable Smart Contract_ 에 대해서 이해하려면, 블록체인 개발의 기본 및 [_Delegate Call_](https://docs.soliditylang.org/en/v0.8.30/introduction-to-smart-contracts.html#delegatecall-and-libraries) 이라는 개념부터 우선적으로 이해해야한다. {% end %}
 
 여느 개발자와 마찬가지로, Smart Contract 개발자들도 코드를 리팩터링하여 개선하거나, 새로운 기능을 추가하는 식으로 유지보수한다.
-그러기 위해서는 이미 블록체인 상에 배포된 Smart Contract의 소스 코드 또한 수정해야할 것이다.
-그러나, 블록체인은 그 특성상 한 번 블록체인 상에 이미 배포된 **데이터**는 변경이 불가하다.
-이러한 블록체인의 특성을 _immutability(불변성)_ 이라 한다.
+그러기 위해서는 이미 블록체인 상에 배포된 Smart Contract의 소스코드 또한 수정해야할 것이다.
+그러나, 블록체인은 그 특성상 한 번 블록체인 상에 이미 배포된 **데이터**는 **변경이 불가**하다.
+이러한 블록체인의 특성을 _immutability(불변성)_ 라 한다.
 이러한 불변성을 통해, 유저들은 블록체인 상에서 이루어지는 다양한 거래가 악의적으로 조작되지 않을 것을 기대할 수 있다.
-그런데, Smart Contract 또한 블록체인 상에서 이루어진 여느 일반적인 거래와 마찬가지로 **데이터**로서 배포되어 동작한다.
+마찬가지로 Smart Contract 또한 블록체인 상에서 이루어진 여느 일반적인 거래와 마찬가지로 **데이터**로서 배포되어 동작한다.
 즉, 언뜻보기에는 이미 블록체인 상에 배포된 Smart Contract에 구현된 함수나 기능 또한 블록체인의 _불변성_ 에 의해 새로이 업데이트하거나 효율적으로 개선하는 것이 불가해 보인다.
 
 이러한 문제를 해결하기 위해, _Upgradable Smart Contract_ 라는 개념이 존재한다.
-또, _Upgradable Smart Contract_ 를 구현하기 위한 방식으로는 대표적으로 _transparent proxy_ 와 _upgradable proxy_ 가 존재한다.
+또 앞서 말하자면, _Upgradable Smart Contract_ 를 구현하기 위한 방식으로는 대표적으로 _transparent proxy_ 와 _upgradable proxy_ 가 존재한다.
 본 아티클에서는 _Upgradable Smart Contract_ 개념과 이를 구현하기 위한 대표적인 방식인 _transparent proxy_ 와 _UUPS(Universal Upgradable Proxy Standard) proxy_ 를 설명한다.
 
 ## What are Upgradable Smart Contracts?
 
-Smart Contract는 사전에 정의된 규칙에 따라서 작업이 실행되도록 함으로써, 순서를 지키며 동작한다. Smart Contract가 존재하지 않는다면 , _token_ 이나 _NFT_ 등, 다양한 _DApp_ 또한 존재할 수 없다. 그렇다면 _Upgradable Smart Contract_ 란 대체 무엇일까? 일단 주지해야하는 사실이 있다. _"Upgradable(업그레이드 가능한)"_ 이라는 개념이라는게, 변할수 있다(mutable)는 개념을 뜻하는게 아니다. _EVM_ 의 기본 규칙중 하나는, 일단 Smart Contract가 블록체인 상에 배포되는 순간, 변할 수 없다. 즉, immutable(불변적)이다. 이러한 _Ethereum Virtual Machine_ 의 대원칙을 어길 수 없기 때문에, _Upgradable Smart Contract_ 는 특수한 프록시 패턴을 사용한다. 프록시 패턴은 대표적인 소프트웨어 디자인 패턴으로서, 해당 패턴에 대한 자세한 설명은 [Refactoring Guru 사이트의 설명](https://refactoring.guru/ko/design-patterns/proxy)으로 갈음한다. 결론부터 말하자면, _Upgradable Smart Contract_ 를 구현하는 데에 있어서, 프록시 패턴은 아래의 두 컨트랙트로 분리하여 별도로 배포하는 식으로 적용되었다.
+Smart Contract는 사전에 정의된 규칙에 따라서 작업이 실행되도록 함으로써, 순서를 지키며 동작한다. Smart Contract가 존재하지 않는다면 , _token_ 이나 _NFT_ 등, 다양한 _DApp_ 또한 존재할 수 없다. 그렇다면 _Upgradable Smart Contract_ 란 대체 무엇일까? 일단 주지해야하는 사실이 있다. _"Upgradable(업그레이드 가능한)"_ 이라는 개념이 변할수 있다(mutable)는 개념을 뜻하는게 아니다. _Ethereum Virtual Machine (EVM)_ 의 대원칙중 하나는, 일단 Smart Contract가 블록체인 상에 배포되는 순간, 변할 수 없다는 것이다. 즉, immutable(불변)이다. 이러한 _EVM_ 의 대원칙을 어길 수 없기 때문에, _Upgradable Smart Contract_ 는 특수한 프록시 패턴을 사용한다. 프록시 패턴은 대표적인 소프트웨어 디자인 패턴으로서, 해당 패턴에 대한 자세한 설명은 [Refactoring Guru 사이트의 설명](https://refactoring.guru/ko/design-patterns/proxy)으로 갈음한다. 결론부터 말하자면, _Upgradable Smart Contract_ 를 구현하는 데에 있어서, 프록시 패턴은 아래의 두 컨트랙트로 분리하여 별도로 배포하는 식으로 적용되었다.
 
 1. _proxy contract (storage contract 라고도 불린다)_
 2. _logic contract (implementation contract 라고도 불린다)_
