@@ -120,7 +120,7 @@ ChatGPT가 근래 하루가 다르게 새로운 버전이 출시되어 개선되
 
 ## Jekyll to Zola 전환기
 
-### Jeykll
+### Jekyll
 
 _Jekyll_ 을 사용한 가장 큰 이유는 대중적으로 개발 블로그로서 많이 사용하는 _SSG(Static Site Generator)_ 였기 때문이다. 이미 시행착오를 겪은 유저들이 작성한 여러 정보도 많고 다양한 테마도 제공하는 등 개발 블로그를 처음 만들어보는 입장에서 진입장벽이 크지 않을 거라고 생각했다. 또, _티스토리_ 나 _velog_ 와 같은 플랫폼을 통하기보다 개발자로서 여러 옵션을 설정해가며 작성해보고 싶었다.
 
@@ -132,9 +132,9 @@ _Zola_ 를 선택한 계기는 사실 지인이 사용 중에 있었기 때문�
 
 _Rust_ 기반의 _SSG_ 라는 사실 또한 기존에 비해 더 빨리 빌드되지 않을까하는 기대감도 있었다.
 
-선택한 이유 중 가장 큰 이유는 사실 _[serene](https://github.com/isunjn/serene_)_ 이라는 테마가 상당히 마음에 들었다.
+선택한 이유 중 가장 큰 이유는 사실 _[serene](https://github.com/isunjn/serene_)\_ 이라는 테마가 상당히 마음에 들었다.
 
-Code, Callout, KaTex를 통한 수식, Mermeid를 통한 차트 등 다양한 표현이 가능한 것도 [serene Demo Site](https://serene-demo.pages.dev/posts/) 에서 확인하여 곧장 _Jeykll_ 에서 바꾸어야 겠다고 생각했다.
+Code, Callout, KaTex를 통한 수식, Mermeid를 통한 차트 등 다양한 표현이 가능한 것도 [serene Demo Site](https://serene-demo.pages.dev/posts/) 에서 확인하여 곧장 _Jekyll_ 에서 바꾸어야 겠다고 생각했다.
 
 ### Settings in Zola
 
