@@ -132,7 +132,7 @@ _Zola_ 를 선택한 계기는 사실 지인이 사용 중에 있었기 때문�
 
 _Rust_ 기반의 _SSG_ 라는 사실 또한 기존에 비해 더 빨리 빌드되지 않을까하는 기대감도 있었다.
 
-선택한 이유 중 가장 큰 이유는 사실 _[serene](https://github.com/isunjn/serene_)\_ 이라는 테마가 상당히 마음에 들었다.
+선택한 이유 중 가장 큰 이유는 사실 _[serene](https://github.com/isunjn/serene_)_ 이라는 테마가 상당히 마음에 들었다.
 
 Code, Callout, KaTex를 통한 수식, Mermeid를 통한 차트 등 다양한 표현이 가능한 것도 [serene Demo Site](https://serene-demo.pages.dev/posts/) 에서 확인하여 곧장 _Jeykll_ 에서 바꾸어야 겠다고 생각했다.
 
