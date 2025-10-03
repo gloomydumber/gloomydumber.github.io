@@ -6,7 +6,7 @@ toc = true
 comment = true
 +++
 
-벌써 5년이 다 지난 2021년 경, 여러 암호화폐 거래소의 기능을 통합해 SPA(Single Page Application)로서 사용할 수 있는 WTS(Web Trading System) 형태의 프로덕트를 만든 적이 있다. 당시 프로덕트에서 지원헀던 거래소로는 Upbit, Bithumb 과 같은 우리나라 거래소와 더불어 Binance, Huobi(현 HTX), OKEX(현 OKX), MXC(현 MEXC), KUCOIN 으로 총 7곳이었다.
+벌써 5년전에 이르는 지난 2021년 경, 여러 암호화폐 거래소의 기능을 통합해 SPA(Single Page Application)로서 사용할 수 있는 WTS(Web Trading System) 형태의 프로덕트를 만든 적이 있다. 당시 프로덕트에서 지원헀던 거래소로는 Upbit, Bithumb 과 같은 우리나라 거래소와 더불어 Binance, Huobi(현 HTX), OKEX(현 OKX), MXC(현 MEXC), KUCOIN 으로 총 7곳이었다.
 
 프로덕트 개발을 위해서는 이렇게 다양한 거래소들의 API를 어떻게 잘 처리할 것인지가 핵심이었다. 각 거래소마다 요청 시 요구하는 인증(Authentication) 방식도 제 각각이고, 같은 동작이더라도 미묘하게 다른 이름의 파라미터 값을 가지고 있었다.
 
