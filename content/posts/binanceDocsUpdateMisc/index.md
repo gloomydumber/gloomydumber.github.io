@@ -79,7 +79,7 @@ comment = true
 
 ![binance-products-docs](img/binance_products_docs.png)
 
-예전 `slate`로 작성된 문서와 비교하면 내용은 크게 변한 것이 없지만, 절차지향 언어처럼 세로로 길게 나열된 내용이 적절히 페이지 단위로 나누어 보기 좋게 재배치되었다. 가령, 인증이 요구되는 API 요청시에 기술적인 인증 방법에 대해 논하는 섹션 제목을 주로 **인증(Authentication)** 으로하여 설명하는데, Binance의 경우 예전 문서에서는 **Endpoint security type** 이라는 섹션에서 설명하고 있다. 구 문서에서는 아래와 같은 ToC로 구성되어 있다.
+예전 `slate`로 작성된 문서와 비교하면 내용은 크게 변한 것이 없지만, 절차지향 언어처럼 세로로 길게 나열된 내용이 적절히 페이지 단위로 나누어 보기 좋게 재배치되었다. 가령, 인증이 요구되는 API 요청시에 기술적인 인증 방법에 대해 논하는 섹션 제목을 주로 **인증(Authentication)** 으로하여 설명하는데[^1], Binance의 경우 예전 문서에서는 **Endpoint security type** 이라는 섹션에서 설명하고 있다. 구 문서에서는 아래와 같은 ToC로 구성되어 있다.
 
 ```md
 - Change Log
@@ -135,3 +135,7 @@ comment = true
 그럼에도 불구하고, **Endpoint security type** 하위의 항목으로 작성되지 않고, 같은 계층의 ToC로 작성되었는데, 새로이 `docusaurus`로 작성된 버전에서는 **Request Security** 의 하위 항목으로 재작성되었다.
 
 이 외에도, 사소한 개선 사항이 존재하지만 전체적인 내용은 동일한 것으로 보인다. 다른 프로덕트의 명세에 활용되었는지 모르겠지만, MDX의 커스텀 컴포넌트 기능을 활용하거나 `docusaurus`의 기능을 활용한 특색있는 페이지는 아직 찾지 못했다. 결론적으로, Binance는 독자가 읽기 편하도록 종(縱)으로 길게 나열되어 작성된 `slate` 에서 소제목이나 프로덕트 별로 페이지로 나누어져 읽기 편한 `docusaurus`로 문서 SSG 를 변경한 것으로 보이고, 실제로 그 목적을 달성한 것 같다. Lighthouse와 같은 점수의 경우, 아무래도 문서의 길이가 길어질수록 `docusaurus`에게 유리할 것 같아서 현재 버전이 더 좋을 것 같기는 한데, 예전 문서를 Wayback Machine으로 밖에 접근하지 못해서 산출해보지 못한 아쉬움이 있다. 앞으로 Binance 뿐만아니라 여러 다양한 프로덕트와 플랫폼에서 목적에 따라 어떤 문서화 도구를 사용했는지 주의깊게 살펴보면 좋은 공부가 될 것 같다.
+
+---
+
+[^1]: [Stripe API 문서](https://docs.stripe.com/api/authentication)의 경우 Introduction 바로 아래에 Authentication 항목을 배치했다.
