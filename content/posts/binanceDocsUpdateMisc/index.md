@@ -30,7 +30,7 @@ comment = true
 
 ## Old Binance Documentation Summary
 
-예전 Binance 문서는 `slate` 로 작성되었다.
+예전 Binance 문서는 [`slate`](https://github.com/slatedocs/slate) 로 작성되었다.
 
 아래 이미지는 당시 Binance 문서를 Wayback Machine에 어카이빙 된 것을 크롬 개발자 도구를 통해 캡쳐한 것이다. (관련 Github Repository의 경우 rebase 처리되는 등 원본 소스를 찾기는 어려웠다)
 
@@ -63,7 +63,7 @@ comment = true
 
 ## New Binance Documentation Summary
 
-개편된 Binance 문서는 HTML meta 태그를 보면 `docusaurus` 기반인 것으로 보인다. 실제로 UI 구성도 전형적인 `docusaurus`의 그것과 같다.
+개편된 Binance 문서는 HTML meta 태그를 보면 [`docusaurus`](https://docusaurus.io/) 기반인 것으로 보인다. 실제로 UI 구성도 전형적인 `docusaurus`의 그것과 같다.
 
 아래 이미지는 현재 Binance 문서를 크롬 개발자 도구로 캡쳐한 것이다.
 
