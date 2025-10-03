@@ -81,47 +81,9 @@ comment = true
 
 예전 `slate`로 작성된 문서와 비교하면 내용은 크게 변한 것이 없지만, 절차지향 언어처럼 세로로 길게 나열된 내용이 적절히 페이지 단위로 나누어 보기 좋게 재배치되었다. 가령, 인증이 요구되는 API 요청시에 기술적인 인증 방법에 대해 논하는 섹션 제목을 주로 **인증(Authentication)** 으로하여 설명하는데[^1], Binance의 경우 예전 문서에서는 **Endpoint security type** 이라는 섹션에서 설명하고 있다. 구 문서에서는 아래와 같은 ToC로 구성되어 있다.
 
-```md
-- Change Log
-- Introduction
-- General Info
-  - General Information
-  - LIMITS
-  - Data Sources
-  - Endpoint security type ⬅️ 이곳에서 인증에 대해 명세되어 있다
-  - SIGNED (TRADE, USER_DATA, AND MARGIN) Endpoint security
-  - SIGNED Endpoint Examples for POST /api/v3/order - Ed25519 Keys
-  - Public API Definitions
-  - Filters
-- Wallet Endpoints
-- Sub-Account Endpoints
-- ... 기타 Endpoints (생략)
-```
-
 ![binance-old-auth](img/binance_old_auth.png)
 
 반면, 새로이 개편된 문서에서는 아래와 같은 ToC로 구성되어 있다.
-
-```md
-- Changelog
-- Readme
-- Filters
-- Enums
-- REST API
-  - General API Information
-  - HTTP Return Codes
-  - Error Codes
-  - General Information on Endpoints
-  - LIMITS
-  - Data Sources
-  - Request Security ⬅️ 이곳에서 인증에 대해 명세되어 있다
-  - General endpoints
-  - Market Data endpoints
-  - Trading endpoints
-  - Account Endpoints
-  - User data stream endpoints (Deprecated)
-- ... 기타 API 등 명세 (생략)
-```
 
 ![binance-new-auth](img/binance_new_auth.png)
 
