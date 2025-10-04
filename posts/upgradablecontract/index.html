@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  
+  
+    
+  
+  <meta name="description" content="My blog site.">
+
+  <title>Upgradable Smart Contracts</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="https://gloomydumber.github.io/img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://gloomydumber.github.io/img/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://gloomydumber.github.io/img/apple-touch-icon.png">
+  
+  <style>
+
+  /* light mode colors */
+  body {
+    --primary-color: #5871a2;
+    --primary-pale-color: #5871a233;
+    --primary-decoration-color: #5871a210;
+    --bg-color: #ffffff;
+    --text-color: #2f3030;
+    --text-pale-color: #767676;
+    --text-decoration-color: #a9a9a9;
+    --highlight-mark-color: #5f75b020;
+
+    --callout-note-color: #5871a2;
+    --callout-tip-color: #268556;
+    --callout-important-color: #885fc9;
+    --callout-warning-color: #ab6632;
+    --callout-caution-color: #c64e4e;
+  }
+
+  /* dark mode colors */
+  body.dark {
+    --primary-color: #6f8fd1;
+    --primary-pale-color: #6f8fd166;
+    --primary-decoration-color: #6f8fd112;
+    --bg-color: #1c1c1c;
+    --text-color: #c1c1c1;
+    --text-pale-color: #848484;
+    --text-decoration-color: #5f5f5f;
+    --highlight-mark-color: #8296cb3b;
+
+    --callout-note-color: #6f8fd1;
+    --callout-tip-color: #47976f;
+    --callout-important-color: #9776cd;
+    --callout-warning-color: #ad7a52;
+    --callout-caution-color: #d06161;
+  }
+
+  /* typography */
+  body {
+    --main-font: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --code-font: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    --homepage-max-width: 768px;
+    --main-max-width: 768px;
+    --avatar-size: 60px;
+    --font-size: 16px;
+    --line-height: 1.75;
+    --img-border-radius: 0px;
+    --detail-border-radius: 0px;
+    --dark-mode-img-brightness: 0.75;
+    --dark-mode-chart-brightness: 0.75;
+    --inline-code-border-radius: 2px;
+    --inline-code-bg-color: var(--primary-decoration-color);
+    --block-code-border-radius: 0px;
+    --block-code-border-color: var(--primary-color);
+    --detail-border-color: var(--primary-color);
+  }
+
+</style>
+
+  <link rel="stylesheet" href="https://gloomydumber.github.io/main.css">
+  
+
+<link id="hl" rel="stylesheet" type="text/css" href="/hl-light.css" />
+
+
+
+  
+</head>
+
+<body class="post">
+  
+  <script>
+    const theme = sessionStorage.getItem('theme');
+    const match = window.matchMedia("(prefers-color-scheme: dark)").matches
+    if ((theme && theme == 'dark') || (!theme && match)) {
+      document.body.classList.add('dark');
+      const hl = document.querySelector('link#hl');
+      if (hl) hl.href = 'https://gloomydumber.github.io/hl-dark.css';
+    }
+  </script>
+  
+  
+<div id="wrapper">
+  <div id="blank"></div>
+  <aside>
+    
+    
+    <nav>
+      <ul>
+        
+        <li>
+          <a class="h2" href="#upgradable-smart-contracts">Upgradable Smart Contracts</a>
+          
+          <ul>
+            
+            <li>
+              <a class="h3" href="#what-are-upgradable-smart-contracts-full-guide">What are Upgradable Smart Contracts? Full Guide</a>
+            </li>
+            
+            <li>
+              <a class="h3" href="#what-are-upgradable-smart-contracts">What are Upgradable Smart Contracts?</a>
+            </li>
+            
+            <li>
+              <a class="h3" href="#how-do-upgradable-smart-contracts-work">How do Upgradable Smart Contracts Work?</a>
+            </li>
+            
+            <li>
+              <a class="h3" href="#transparent-vs-uups-proxy">Transparent vs UUPS Proxy</a>
+            </li>
+            
+            <li>
+              <a class="h3" href="#how-to-make-a-smart-contract-upgradable">How to Make a Smart Contract Upgradable?</a>
+            </li>
+            
+            <li>
+              <a class="h3" href="#the-main-limitation-of-upgradable-smart-contracts">The main Limitation of Upgradable Smart Contracts</a>
+            </li>
+            
+            <li>
+              <a class="h3" href="#tl-dr">TL;DR</a>
+            </li>
+            
+            <li>
+              <a class="h3" href="#references">References</a>
+            </li>
+            
+          </ul>
+          
+        </li>
+        
+      </ul>
+    </nav>
+    
+    
+    <button id="back-to-top" aria-label="back to top">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-up"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+
+    </button>
+    
+  </aside>
+  <main>
+    
+<header>
+  <nav>
+    <a id="back-link" href="https:&#x2F;&#x2F;gloomydumber.github.io&#x2F;posts">← Back</a>
+  </nav>
+</header>
+
+
+    <div>
+      
+      
+      
+      
+      <div id="copy-cfg" style="display: none;" data-copy-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
+" data-check-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
+"></div>
+      
+      <article class="prose">
+        <h1>Upgradable Smart Contracts</h1>
+        <div id="post-info">
+          <div id="date">
+            <span id="publish">Jun 26, 2022</span>
+            </div>
+
+          
+        </div>
+
+        
+        
+
+        
+
+        <h1 id="upgradable-smart-contracts">Upgradable Smart Contracts<a class="zola-anchor" href="#upgradable-smart-contracts" aria-label="Anchor link for: upgradable-smart-contracts" style="visibility: hidden;"></a>
+</h1>
+<p>해당 포스트는 <em>moralis</em> 의 <a rel="noopener nofollow noreferrer" target="_blank" href="https://moralis.io/what-are-upgradable-smart-contracts-full-guide/"><em>What are Upgradable Smart Contracts? Full Guide</em></a> 를 기반하여 Upgradable Contract 개념에 대해 작성한 것 입니다.</p>
+<h2 id="what-are-upgradable-smart-contracts-full-guide">What are Upgradable Smart Contracts? Full Guide<a class="zola-anchor" href="#what-are-upgradable-smart-contracts-full-guide" aria-label="Anchor link for: what-are-upgradable-smart-contracts-full-guide" style="visibility: hidden;"></a>
+</h2>
+<table><thead><tr><th style="text-align: center"><img src="https://gloomydumber.github.io/posts/upgradablecontract/img/01.png" alt="01" /></th></tr></thead><tbody>
+<tr><td style="text-align: center"><b>Upgradable Smart Contract</b></td></tr>
+</tbody></table>
+
+<blockquote class="callout warning has-title">
+  
+  
+  <p class="title">
+    <span class="icon">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path d="M12.865 3.00017L22.3912 19.5002C22.6674 19.9785 22.5035 20.5901 22.0252 20.8662C21.8732 20.954 21.7008 21.0002 21.5252 21.0002H2.47266C1.92037 21.0002 1.47266 20.5525 1.47266 20.0002C1.47266 19.8246 1.51886 19.6522 1.60663 19.5002L11.1329 3.00017C11.4091 2.52187 12.0206 2.358 12.4989 2.63414C12.651 2.72191 12.7772 2.84815 12.865 3.00017ZM4.20471 19.0002H19.7932L11.9989 5.50017L4.20471 19.0002ZM10.9989 16.0002H12.9989V18.0002H10.9989V16.0002ZM10.9989 9.00017H12.9989V14.0002H10.9989V9.00017Z" fill="currentColor"></path></svg>
+
+    </span>
+    <strong>Warning</strong>
+  </p>
+  <div class="content">
+    <p><em>Upgradable Smart Contract</em> 에 대해서 이해하려면, 블록체인 개발의 기본 및 <a rel="noopener nofollow noreferrer" target="_blank" href="https://docs.soliditylang.org/en/v0.8.30/introduction-to-smart-contracts.html#delegatecall-and-libraries"><em>Delegate Call</em></a> 이라는 개념부터 우선적으로 이해해야한다.</p>
+
+  </div>
+  
+</blockquote>
+
+<p>여느 개발자와 마찬가지로, Smart Contract 개발자들도 코드를 리팩터링하여 개선하거나, 새로운 기능을 추가하는 식으로 유지보수한다.
+그러기 위해서는 이미 블록체인 상에 배포된 Smart Contract의 소스코드 또한 수정해야할 것이다.
+그러나, 블록체인은 그 특성상 한 번 블록체인 상에 이미 배포된 <strong>데이터</strong>는 <strong>변경이 불가</strong>하다.
+이러한 블록체인의 특성을 <em>immutability(불변성)</em> 라 한다.
+이러한 불변성을 통해, 유저들은 블록체인 상에서 이루어지는 다양한 거래가 악의적으로 조작되지 않을 것을 기대할 수 있다.
+마찬가지로 Smart Contract 또한 블록체인 상에서 이루어진 여느 일반적인 거래와 마찬가지로 <strong>데이터</strong>로서 배포되어 동작한다.
+즉, 언뜻보기에는 이미 블록체인 상에 배포된 Smart Contract에 구현된 함수나 기능 또한 블록체인의 <em>불변성</em> 에 의해 새로이 업데이트하거나 효율적으로 개선하는 것이 불가해 보인다.</p>
+<p>이러한 문제를 해결하기 위해, <em>Upgradable Smart Contract</em> 라는 개념이 존재한다.
+또 앞서 말하자면, <em>Upgradable Smart Contract</em> 를 구현하기 위한 방식으로는 대표적으로 <em>transparent proxy</em> 와 <em>upgradable proxy</em> 가 존재한다.
+본 아티클에서는 <em>Upgradable Smart Contract</em> 개념과 이를 구현하기 위한 대표적인 방식인 <em>transparent proxy</em> 와 <em>UUPS(Universal Upgradable Proxy Standard) proxy</em> 를 설명한다.</p>
+<h2 id="what-are-upgradable-smart-contracts">What are Upgradable Smart Contracts?<a class="zola-anchor" href="#what-are-upgradable-smart-contracts" aria-label="Anchor link for: what-are-upgradable-smart-contracts" style="visibility: hidden;"></a>
+</h2>
+<p>Smart Contract는 사전에 정의된 규칙에 따라서 작업이 실행되도록 함으로써, 순서를 지키며 동작한다. Smart Contract가 존재하지 않는다면 , <em>token</em> 이나 <em>NFT</em> 등, 다양한 <em>DApp</em> 또한 존재할 수 없다. 그렇다면 <em>Upgradable Smart Contract</em> 란 대체 무엇일까? 일단 주지해야하는 사실이 있다. <em>"Upgradable(업그레이드 가능한)"</em> 이라는 개념이 변할수 있다(mutable)는 개념을 뜻하는게 아니다. <em>Ethereum Virtual Machine (EVM)</em> 의 대원칙중 하나는, 일단 Smart Contract가 블록체인 상에 배포되는 순간, 변할 수 없다는 것이다. 즉, immutable(불변)이다. 이러한 <em>EVM</em> 의 대원칙을 어길 수 없기 때문에, <em>Upgradable Smart Contract</em> 는 특수한 프록시 패턴을 사용한다. 프록시 패턴은 대표적인 소프트웨어 디자인 패턴으로서, 해당 패턴에 대한 자세한 설명은 <a rel="noopener nofollow noreferrer" target="_blank" href="https://refactoring.guru/ko/design-patterns/proxy">Refactoring Guru 사이트의 설명</a>으로 갈음한다. 결론부터 말하자면, <em>Upgradable Smart Contract</em> 를 구현하는 데에 있어서, 프록시 패턴은 아래의 두 컨트랙트로 분리하여 별도로 배포하는 식으로 적용되었다.</p>
+<ol>
+<li><em>proxy contract (storage contract 라고도 불린다)</em></li>
+<li><em>logic contract (implementation contract 라고도 불린다)</em></li>
+</ol>
+<p><img src="https://gloomydumber.github.io/posts/upgradablecontract/img/02.png" alt="02" /></p>
+<h2 id="how-do-upgradable-smart-contracts-work">How do Upgradable Smart Contracts Work?<a class="zola-anchor" href="#how-do-upgradable-smart-contracts-work" aria-label="Anchor link for: how-do-upgradable-smart-contracts-work" style="visibility: hidden;"></a>
+</h2>
+<p>위의 도식을 보면, 유저가 <em>logic contract</em> 를 최종적으로 호출하기 위해서는 <em>proxy contract</em> 를 거쳐서 상호작용하고 있음을 알 수 있다. 이것이 가능한 것은, <em>proxy contract</em> 가 <em>logic contract</em> 의 주소를 저장할 수 있기 때문이다. Smart Contract 에서는 변수를 선언하여 다룰 수 있고, 변수에 특정 contract의 주소값도 저장할 수 있음은 쉬운 개념이다. (가령, Solidity 에서는 <code>address</code> 를 변수 타입으로 선언할 수 있다) 만약, 우리가 새로운 <em>logic contract</em> 를 구현해서 deploy했다면, <em>proxy contract</em> 에 저장된 <em>logic contract</em> 의 주소를 업데이트 된 새로운 컨트랙트의 주소값으로 바꿔주기만하면 된다는 것이 <em>Upgradalbe Smart Contract</em> 의 핵심이다.</p>
+<p><em>Upgradable Smart Contract</em> 를 구현하기 위한 프록시 패턴에는 여러 방법이 있다. 다만, 프록시 패턴이 여러 유형으로 존재하지만, 대부분의 프록시 패턴은 앞서 언급한 <em>transparent proxy</em> 와 <em>UUPS(Universal Upgradable Proxy Standard)</em> 의 형태로 구현된다. 다행히도, 이 두 타입의 예제 코드 모두 <em>OpenZeppelin</em> 에서 제공하고있다.</p>
+<p><img src="https://gloomydumber.github.io/posts/upgradablecontract/img/03.png" alt="03" /></p>
+<h2 id="transparent-vs-uups-proxy">Transparent vs UUPS Proxy<a class="zola-anchor" href="#transparent-vs-uups-proxy" aria-label="Anchor link for: transparent-vs-uups-proxy" style="visibility: hidden;"></a>
+</h2>
+<p>앞서 언급한 바와 같이, <em>transparent</em>와 <em>UUPS</em> 두 가지의 <em>proxy pattern</em>들은 가장 보편적인 방법이다. 두 방법 모두 같은 원리를 사용하지만, 약간의 다른 구조를 취하고 있다. 이에 둘을 비교하고, 두 프록시 패턴의 주요한 특징을 알아보도록하자.</p>
+<p><strong>Transparent Proxy Pattern Type:</strong></p>
+<ul>
+<li>업그레이드에 관련된 기능이 <em>proxy Contract</em> 에서 관리됨</li>
+<li>상대적으로 고비용</li>
+<li>상대적으로 유지보수가 쉬움</li>
+</ul>
+<p><strong>UUPS Proxy Pattern Type:</strong></p>
+<ul>
+<li>업그레이드에 관련된 기능이 <em>logic contract</em> 에서 관리됨</li>
+<li>상대적으로 저비용</li>
+<li>상대적으로 유지보수가 어려움</li>
+</ul>
+<p><img src="https://gloomydumber.github.io/posts/upgradablecontract/img/04.png" alt="04" /></p>
+<h2 id="how-to-make-a-smart-contract-upgradable">How to Make a Smart Contract Upgradable?<a class="zola-anchor" href="#how-to-make-a-smart-contract-upgradable" aria-label="Anchor link for: how-to-make-a-smart-contract-upgradable" style="visibility: hidden;"></a>
+</h2>
+<p><em>Upgradable Smart Contract</em> 를 구현하기 위해서는 일반적으로 <em>Openzepplin</em> 에서 구현해 둔 코드를 상속받아 활용할 수 있기 때문에, 굳이 프록시 패턴 자체를 우리 스스로 구현할 필요는 없다.</p>
+<p>본 아티클에서는 <em>Openzeppelin</em> 에서 구현한 코드에 대한 구체적인 설명은 해당 아티클에서 다루지 않고, 어떻게 상속받아야 하는지만 다루겠다.</p>
+<ol>
+<li>먼저, 우리는 <em>initializable</em> 컨트랙트를 상속해야한다.</li>
+</ol>
+<pre data-lang="solidity" class="language-solidity z-code"><code class="language-solidity" data-lang="solidity"><span class="z-source z-solidity"><span class="z-keyword z-declaration z-class">contract</span> <span class="z-support z-function">ExampleContractName</span> <span class="z-keyword">is</span> <span class="z-support z-function">initializable</span> <span class="z-punctuation z-section z-block z-begin z-sol">{</span><span class="z-punctuation z-section z-block z-end">}</span>
+</span></code></pre>
+<p><em>transparent proxy pattern</em> 를 구현할 때는 위와 같이 <em>initializable</em> 만 상속하여 사용하고, <em>UUPS proxy pattern</em> 을 구현한다면 아래와 같이 <em>UUPSUpgradable</em> 상속을 추가해야한다.</p>
+<pre data-lang="solidity" class="language-solidity z-code"><code class="language-solidity" data-lang="solidity"><span class="z-source z-solidity"><span class="z-keyword z-declaration z-class">contract</span> <span class="z-support z-function">ExampleContractName</span> <span class="z-keyword">is</span> <span class="z-support z-function">initializable</span><span class="z-scope">,</span> <span class="z-support z-function">UUPSUpgradable</span> <span class="z-punctuation z-section z-block z-begin z-sol">{</span><span class="z-punctuation z-section z-block z-end">}</span>
+</span></code></pre>
+<ol start="2">
+<li>
+<p>다음으로, 일반적으로 <code>constructor</code> 기능을 하는 <code>constructor () {}</code> 구문과 별개로 Smart Contract 를 활성화시키는 <em>initializer</em> 함수를 추가할 필요가 있다. 즉, <code>function initialize() public initializer {}</code> 를 추가해야한다. 함수 이름이 굳이 <em>initialize</em> 일 필요는 없으나, 끝의 <code>initializer</code> <em>modifier</em> 부분은 필수적이다.</p>
+</li>
+<li>
+<p>다음으로, 기존 <em>OpenZeppelin</em> 컨트랙트 라이브러리를 아래 그림과 같이 <em>upgradable</em> 버전으로 바꿔줘야한다.</p>
+</li>
+</ol>
+<p><img src="https://gloomydumber.github.io/posts/upgradablecontract/img/05.png" alt="05" /></p>
+<ol start="4">
+<li><em>initialize</em> 함수에서, 함수인 <em>_init</em> 함수들을 다음과 같이 호출해야한다.</li>
+</ol>
+<pre data-lang="solidity" class="language-solidity z-code"><code class="language-solidity" data-lang="solidity"><span class="z-source z-solidity"><span class="z-keyword z-declaration z-function">function</span> <span class="z-entity z-name z-function">initialize</span><span class="z-punctuation z-section z-block z-begin z-sol">(</span><span class="z-punctuation z-section z-block z-end z-sol">)</span> <span class="z-storage z-type">initializer</span> <span class="z-storage z-modifier">public</span> <span class="z-punctuation z-section z-block z-begin z-sol">{</span>
+</span><span class="z-source z-solidity">    <span class="z-support z-function">__ERC1155_init</span><span class="z-punctuation z-section z-block z-begin z-sol">(</span>“”<span class="z-punctuation z-section z-block z-end z-sol">)</span>;
+</span><span class="z-source z-solidity">    <span class="z-support z-function">__Ownable_init</span><span class="z-punctuation z-section z-block z-begin z-sol">(</span><span class="z-punctuation z-section z-block z-end z-sol">)</span>;
+</span><span class="z-source z-solidity">    <span class="z-support z-function">__UUPSUpgradeable_init</span><span class="z-punctuation z-section z-block z-begin z-sol">(</span><span class="z-punctuation z-section z-block z-end z-sol">)</span>;
+</span><span class="z-source z-solidity"><span class="z-punctuation z-section z-block z-end">}</span>
+</span></code></pre>
+<ol start="5">
+<li>마지막으로, <code>msg.sender</code>를 <code>_msgSender()</code>로 대체한다. proxy address가 아닌, 유저의 wallet address와 상호작용해야하기 때문이다.</li>
+</ol>
+<h2 id="the-main-limitation-of-upgradable-smart-contracts">The main Limitation of Upgradable Smart Contracts<a class="zola-anchor" href="#the-main-limitation-of-upgradable-smart-contracts" aria-label="Anchor link for: the-main-limitation-of-upgradable-smart-contracts" style="visibility: hidden;"></a>
+</h2>
+<p><em>Upgradable Smart Contract</em> 을 활용할 때 가장 주의해야할 점은 <em>storage collision</em> 문제이다.</p>
+<p><em>storage collision</em> 을 고려하지 않는 식으로 미숙하게 <em>Upgradable Smart Contract</em> 를 구현하면 치명적인 보안 사고로 이어질 수 있다.</p>
+<p><img src="https://gloomydumber.github.io/posts/upgradablecontract/img/06.png" alt="06" /></p>
+<p>위의 이미지는 새로운 컨트랙트 버전에서 새로운 변수명이 위에 선언되어있고, <em>storage collision</em> 을 일으키고 있는 것을 나타낸다.</p>
+<p>새로운 변수명은 꼭 아래 부분에 정의해야 <em>storage collison</em> 이 일어나지 않는다.</p>
+<h2 id="tl-dr">TL;DR<a class="zola-anchor" href="#tl-dr" aria-label="Anchor link for: tl-dr" style="visibility: hidden;"></a>
+</h2>
+<ol>
+<li>Immutable한 블록체인 환경에서도 <em>Upgradable Smart Contract</em> 를 배포할 수 있다.</li>
+<li>이를 위해서 proxy pattern 을 활용하는데, <em>proxy contract</em> 와 <em>logic contract</em> 를 별도로 배포하는 방식이다.</li>
+<li>본문에서는 다루고 있지 않지만, <em>Upgradable Smart Contract</em> 구현의 핵심은 <em>delegate call</em> 을 이용하는 것이다.</li>
+<li><em>storage collision</em> 이 일어나지 않도록 주의해야한다.</li>
+</ol>
+
+<blockquote class="callout note has-title">
+  
+  
+  <p class="title">
+    <span class="icon">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM11 7H13V9H11V7ZM11 11H13V17H11V11Z" fill="currentColor"></path></svg>
+
+    </span>
+    <strong>Note</strong>
+  </p>
+  <div class="content">
+    <p>해당 아티클은 Openzeppelin 코드에 대한 설명 추가, storage collision에 대한 자세한 설명 등 좀 더 자세한 사항을 업데이트 할 예정입니다.</p>
+
+  </div>
+  
+</blockquote>
+
+<h2 id="references">References<a class="zola-anchor" href="#references" aria-label="Anchor link for: references" style="visibility: hidden;"></a>
+</h2>
+<ul>
+<li><a rel="noopener nofollow noreferrer" target="_blank" href="https://docs.soliditylang.org/en/v0.8.30/introduction-to-smart-contracts.html#delegatecall-and-libraries">Delegate Call - Solidity Docs</a></li>
+<li><a rel="noopener nofollow noreferrer" target="_blank" href="https://refactoring.guru/ko/design-patterns/proxy">Proxy Pattern - Refactoring Guru</a></li>
+<li><a rel="noopener nofollow noreferrer" target="_blank" href="https://www.youtube.com/watch?v=af1i0z0jhkg">youtube video about upgradable Smart Contract on moralis.io</a></li>
+<li><a rel="noopener nofollow noreferrer" target="_blank" href="https://stackoverflow.com/questions/72475214/solidity-why-use-initialize-function-instead-of-constructor">constructor 대신 initializer 함수를 사용하는 이유</a></li>
+<li><a rel="noopener nofollow noreferrer" target="_blank" href="https://medium.com/coinmonks/delegatecall-calling-another-contract-function-in-solidity-b579f804178c">medium post about delegate call</a></li>
+</ul>
+
+      </article>
+
+      
+      
+      <div class="reaction right" data-endpoint="https:&#x2F;&#x2F;example.com&#x2F;api&#x2F;reaction"></div>
+      
+
+      
+      
+      <div class="giscus"></div>
+      <script src="https://giscus.app/client.js"
+        data-repo="isunjn/serene-demo-site"
+        data-repo-id="R_kgDOGXmnuA"
+        data-category="giscus_comment"
+        data-category-id="DIC_kwDOGXmnuM4CWs0S"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="0"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="https://gloomydumber.github.io/giscus_light.css"
+        data-lang="en"
+        crossorigin="anonymous"
+        async>
+</script>
+      
+    </div>
+
+    
+
+
+<footer>
+  <div class="left">
+    <div class="copyright">
+      © 2025 gloomydumber
+      
+    </div>
+  </div>
+
+  <div class="right">
+    
+    
+      
+    
+    
+    <a id="rss-btn" href="https://gloomydumber.github.io/posts/feed.xml">RSS</a>
+    
+    
+
+    
+    
+    
+    <button id="theme-toggle" aria-label="theme switch">
+      <span class="moon-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path d="M10 7C10 10.866 13.134 14 17 14C18.9584 14 20.729 13.1957 21.9995 11.8995C22 11.933 22 11.9665 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C12.0335 2 12.067 2 12.1005 2.00049C10.8043 3.27098 10 5.04157 10 7ZM4 12C4 16.4183 7.58172 20 12 20C15.0583 20 17.7158 18.2839 19.062 15.7621C18.3945 15.9187 17.7035 16 17 16C12.0294 16 8 11.9706 8 7C8 6.29648 8.08133 5.60547 8.2379 4.938C5.71611 6.28423 4 8.9417 4 12Z" fill="currentColor"></path></svg>
+</span>
+      <span class="sun-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path d="M12 18C8.68629 18 6 15.3137 6 12C6 8.68629 8.68629 6 12 6C15.3137 6 18 8.68629 18 12C18 15.3137 15.3137 18 12 18ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16ZM11 1H13V4H11V1ZM11 20H13V23H11V20ZM3.51472 4.92893L4.92893 3.51472L7.05025 5.63604L5.63604 7.05025L3.51472 4.92893ZM16.9497 18.364L18.364 16.9497L20.4853 19.0711L19.0711 20.4853L16.9497 18.364ZM19.0711 3.51472L20.4853 4.92893L18.364 7.05025L16.9497 5.63604L19.0711 3.51472ZM5.63604 16.9497L7.05025 18.364L4.92893 20.4853L3.51472 19.0711L5.63604 16.9497ZM23 11V13H20V11H23ZM4 11V13H1V11H4Z" fill="currentColor"></path></svg>
+</span>
+    </button>
+    
+  </div>
+</footer>
+
+
+
+
+<dialog id="rss-mask">
+  <div>
+    <a href="https:&#x2F;&#x2F;gloomydumber.github.io&#x2F;posts&#x2F;feed.xml">https:&#x2F;&#x2F;gloomydumber.github.io&#x2F;posts&#x2F;feed.xml</a>
+    
+    
+    <button autofocus aria-label="copy" data-link="https:&#x2F;&#x2F;gloomydumber.github.io&#x2F;posts&#x2F;feed.xml" data-copy-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
+" data-check-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
+" >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z" fill="currentColor"></path></svg>
+
+    </button>
+  </div>
+</dialog>
+
+
+
+  </main>
+</div>
+
+  
+<script src="/js/lightense.min.js"></script>
+
+
+  <script src="https://gloomydumber.github.io/js/main.js"></script>
+</body>
+
+</html>
