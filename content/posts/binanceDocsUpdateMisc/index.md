@@ -89,7 +89,7 @@ comment = true
 
 기존에는 **Endpoint security type** 이라는 제목으로 섹션을 두어, 각 Endpoint의 보안 유형에 따라 처리해야할 방식이 달라져야 함을 설명했다. 결국 API 이용시의 인증(Authentication)에 대한 기술적인 명세인데, 새로이 `docusaurus` 로 문서를 옮기면서는 **Request Security** 라는 명료한 제목으로 변경하였다.
 
-특히, 예전 버전의 문서에서는 아래와 같은 제목으로 연이어 작성된 항목에서 HMAC SHA256 알고리즘을 활용한 인증 방법에 대해서 구체적인 예시를 들어 설명하고 있다.
+특히, 예전 버전의 문서에서는 아래와 같은 제목으로 연이어 작성된 항목에서 각각 HMAC SHA256 알고리즘과 Ed25519 알고리즘을 활용한 인증 방법에 대해서 구체적인 예시를 들어 설명하고 있다.
 
 - SIGNED (TRADE, USER_DATA, AND MARGIN) Endpoint security
 - SIGNED Endpoint Examples for POST /api/v3/order - Ed25519 Keys
@@ -98,7 +98,9 @@ comment = true
 
 ![binance-new-auth-sub](img/binance_new_auth_sub.png)
 
-이 외에도, 사소한 개선 사항이 존재하지만 전체적인 내용은 동일한 것으로 보인다. 다른 프로덕트의 명세에 활용되었는지 모르겠지만, MDX의 커스텀 컴포넌트 기능을 활용하거나 `docusaurus`의 기능을 활용한 특색있는 페이지는 아직 찾지 못했다. 결론적으로, Binance는 독자가 읽기 편하도록 종(縱)으로 길게 나열되어 작성된 `slate` 에서 소제목이나 프로덕트 별로 페이지로 나누어져 읽기 편한 `docusaurus`로 문서 SSG 를 변경한 것으로 보이고, 실제로 그 목적을 달성한 것 같다. Lighthouse와 같은 점수의 경우, 아무래도 문서의 길이가 길어질수록 `docusaurus`에게 유리할 것 같아서 현재 버전이 더 좋을 것 같기는 한데, 예전 문서를 Wayback Machine으로 밖에 접근하지 못해서 산출해보지 못한 아쉬움이 있다. 앞으로 Binance 뿐만아니라 여러 다양한 프로덕트와 플랫폼에서 목적에 따라 어떤 문서화 도구를 사용했는지 주의깊게 살펴보면 좋은 공부가 될 것 같다.
+이 외에도, 사소한 개선 사항이 존재하지만 전체적인 내용은 동일한 것으로 보인다. 다른 프로덕트의 명세에 활용되었는지 모르겠지만, MDX의 커스텀 컴포넌트 기능을 활용하거나 `docusaurus`의 기능을 활용한 특색있는 페이지는 아직 찾지 못했다. 결론적으로, Binance는 독자가 읽기 편하도록 종(縱)으로 길게 나열되어 작성된 `slate` 에서 소제목이나 프로덕트 별로 페이지로 나누어져 읽기 편한 `docusaurus`로 문서 SSG를 변경한 것으로 보이고, 실제로 그 목적을 달성한 것 같다. Lighthouse와 같은 점수의 경우, 아무래도 문서의 길이가 길어질수록 `docusaurus`에게 유리할 것 같아서 현재 버전이 더 좋을 것 같기는 한데, 예전 문서를 Wayback Machine으로 밖에 접근하지 못해서 직접 산출해보지 못한 아쉬움이 있다. 앞으로 Binance 뿐만아니라 여러 다양한 프로덕트와 플랫폼에서 목적에 따라 어떤 문서화 도구를 사용했는지 주의깊게 살펴보면 좋은 공부가 될 것 같다.
+
+추가적으로, [Binance 개발자 센터](https://developers.binance.com/)에서 `llms.txt`를 정의하여 제공하고 있는지 확인해보았는데 `docusaurus` 생태계에서 관련 Plugin으로 [docusaurus-plugin-llms-txt](https://github.com/din0s/docusaurus-plugin-llms-txt) 등이 있으나, Binance 차원에서는 정의해놓지 않은 것으로 보인다. 심지어 `robots.txt`도 정의해놓지 않은 것으로 확인된다.
 
 ---
 
