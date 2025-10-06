@@ -217,7 +217,7 @@ contract CallerContract {
 
 ### `call`
 
-- `address(...).call{value: 1 ether, gas: 10000}("");` 와 같이 `bytes memory` 파라미터를 비워두면 이더만 전송할 수 있고, 보낼 이더 수량과 가스를 지정할 수 있다. (이는 이더 전송시 `send`와 달리 권장되는 방법이다)
+- `address(...).call{value: 1 ether, gas: 10000}("");` 와 같이 `bytes memory` 파라미터를 비워두면 함수 호출이 아니라 이더 전송으로 쓸 수 있고, 보낼 이더 수량과 가스를 지정할 수 있다. (이는 이더 전송시 `send`와 달리 권장되는 방법이다)
 - 다른 컨트랙트의 함수 호출이 가능하다. (하지만 High-level Call을 권장한다)
 - 호출하는 컨트랙트(callee)에 상태 변경 로직이 있으면 callee의 상태가 변경된다.
 
