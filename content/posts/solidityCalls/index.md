@@ -202,12 +202,6 @@ contract CallerContract {
 1. 개발자가 직접 함수 시그니처와 파라미터를 `abi.encode`와 같은 메소드를 통해 인코딩해서 `bytes memory`로 넘겨줘야 한다.
 2. 실패시 트랜잭션 자체가 `revert` 되지 않고, 성공/실패 여부도 `bool` 타입으로 개발자가 직접 예외 처리해야 한다. (Silently Fail 될 수 있음을 고려해야 한다)
 
-## `call`
-
-## `staticcall`
-
-## `delegatecall`
-
 ---
 
 - [Solidity Docs | members of address types](https://docs.soliditylang.org/en/v0.8.30/units-and-global-variables.html#members-of-address-types)
