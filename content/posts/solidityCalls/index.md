@@ -24,11 +24,11 @@ address(0xdAC17F958D2ee523a2206206994597C13D831ec7).delegatecall(...);
 
 > In order to interface with contracts that do not adhere to the ABI, or to get more direct control over the encoding, the functions `call`, `delegatecall` and `staticcall` are provided. They all take a single `bytes memory` parameter and return the success condition (as a `bool`) and the returned data (`bytes memory`). The functions `abi.encode`, `abi.encodePacked`, `abi.encodeWithSelector` and `abi.encodeWithSignature` can be used to encode structured data.
 
-이에 따르면, `call`, `staticcall`, `delegatecall` 은 컨트랙트를 ABI(Application Binary Interface)에 관계없이 직접적으로 제어하고자 할 때 사용하는 함수(메소드)들이다. 여기서 **contracts that do not adhere to the ABI** 라는 표현의 뉘앙스가 조금 이해하기 어렵다. 직역했을 때 **ABI를 따르지않는** 혹은 **ABI를 고수하지않는** 컨트랙트란, **ABI를 통한 호출이 불가능한 컨트랙트** 라는 뜻이다. 일반적으로 컨트랙트를 Solidity나 Vypher를 통해 작성하고 컴파일하는 경우에 자연스레 ABI가 함께 생성되며, 컨트랙트를 직접 raw-level의 바이트코드로 작성하는 경우 등 아주 특이한 경우에만 ABI를 통해 컨트랙트 호출이 불가능하다.
+이에 따르면, `call`, `staticcall`, `delegatecall` 은 컨트랙트를 ABI(Application Binary Interface)에 관계없이 직접적으로 제어하고자 할 때 사용하는 함수(메소드)들이다. 여기서 **contracts that do not adhere to the ABI** 라는 표현의 뉘앙스가 조금 이해하기 어렵다. 직역했을 때 **ABI를 따르지 않는** 혹은 **ABI를 고수하지 않는** 컨트랙트란, **ABI를 통한 호출이 불가능한 컨트랙트** 라는 뜻이다. 일반적으로 컨트랙트를 Solidity나 Vypher를 통해 작성하고 컴파일하는 경우에 자연스레 ABI가 함께 생성되며, 컨트랙트를 직접 raw-level의 바이트코드로 작성하는 경우 등 아주 특이한 경우에만 ABI를 통한 컨트랙트 호출이 불가능하다.
 
-{% detail(title="일반적인 상황이 아니라서, 크게 고려하지 않아도 되지만 다음과 같은 컨트랙트 코드가 ABI를 통해 호출이 불가능한 컨트랙트의 예이다. 당장 이해가 가지 않는다면 나중에 참조해도 좋다.") %}
+{% detail(title="일반적인 상황이 아니라서, 크게 고려하지 않아도 되지만 다음과 같은 컨트랙트 코드가 ABI를 통한 호출이 불가능한 컨트랙트의 예이다.") %}
 
-아래는 동작이 별도의 함수로 정의되어 있지않고 `fallback()`으로만 구성되어, ABI를 통한 접근이 불가능한 컨트랙트이다.
+아래 컨트랙트는 동작이 별도의 함수로 정의되어 있지않고 `fallback()`으로만 구성되어, ABI를 통한 호출이 불가능하다.
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -67,9 +67,9 @@ contract NonABIContract {
 }
 ```
 
-아래와 같이, 위의 컨트랙트 로직은 `fallback()` 에서만 동작하므로 `interface` 에서 정의된 것이 없다. 아래에서 다시 설명하겠지만 결국 `call` 을 이용해 접근하고 있다.
+위의 컨트랙트 로직은 `fallback()` 에서만 동작하므로 `interface` 키워드로 선언한 `INonABIContract` 에서 정의된 것이 없다. 결국 아래 코드 예제에서 `call` 을 이용해 접근하고 있다.
 
-```solidity ,linenos,hl_lines=21
+```solidity ,hl_lines=20-21
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
@@ -97,9 +97,11 @@ contract Caller {
 }
 ```
 
+이렇듯, 아주 특수한 경우에만 컨트랙트가 ABI를 통해 호출이 불가능하다.
+
 {% end %}
 
-정리하자면, **`call`, `staticcall`, `delegatecall` 은 ABI를 통해 호출이 불가하거나, 인코딩을 통해 보다 직접적인 제어가 필요한 컨트랙트를 호출하기 위해 사용하는 함수다.**
+정리하자면, **`call`, `staticcall`, `delegatecall` 은 ABI를 통한 호출이 불가하거나, 인코딩을 통해 보다 직접적인 제어가 필요한 컨트랙트를 호출하기 위해 사용하는 함수다.**
 
 또, `call`, `staticcall`, `delegatecall` 모두 파라미터로는 `bytes memory` 타입의 하나의 값을 취하고,
 
@@ -107,7 +109,7 @@ contract Caller {
 
 이를 코드 예제로 확인해보면,
 
-```solidity ,linenos,hl_lines=2
+```solidity ,hl_lines=2
 bytes memory payload = abi.encodeWithSignature("register(string)", "MyName");
 (bool success, bytes memory returnData) = address(nameReg).call(payload);
 require(success);
@@ -123,8 +125,6 @@ require(success);
 
 즉, `call`, `staticcall`, `delegatecall` 모두 공통적으로 **low-level function** 이므로 조심해서 사용해야한다고 언급하고 있다. 특히, 알려지지 않은 컨트랙트를 호출 할 때에는 제어권을 해당 컨트랙트에 넘겨주기 때문에 주의해야한다고 언급한다. 따라서 다른 컨트랙트의 함수를 호출할 때에는 일반적으로 `x.f()` 와 같은 방법으로 컨트랙트 객체를 이용하여 접근하는 방식을 택하는 것을 권장하고 있다.
 
-`call`, `staticcall`, `delegatecall` 을 사용했을 때, 제어권을 악의적인 컨트랙트를 넘겨 줬을 때 발생할 수 있는 구체적인 공격 유형에 대해서는 이후에 다루겠다.
-
 이로써 `call`, `staticcall`, `delegatecall`의 공통점을 요약하면,
 
 - `address` 타입의 멤버 메소드이다.
@@ -138,7 +138,7 @@ require(success);
 
 컨트랙트의 함수 인터페이스를 알면 `call`, `staticcall`, `delegatecall` 을 사용할 필요없이 아래와 같이 호출 할 수 있다.
 
-```solidity ,linenos,hl_lines=18
+```solidity ,hl_lines=18
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
@@ -161,16 +161,16 @@ contract CallerContract {
 }
 ```
 
-`CalledContract` 의 인터페이스가 `ICalledContract` 로 `interface` 키워드를 통해 `setNumber` 함수와 함께 정의되어 있으므로, `CallerContract` 에서 `.setNumber()` 와 같이 멤버 메소드를 호출하는 식으로 호출이 가능하다. 이러한 방식의 호출을 **High-Level Call** 이라고 한다.
+`CalledContract` 의 인터페이스가 `ICalledContract` 로 `interface` 키워드를 통해 `setNumber` 함수와 함께 정의되어 있으므로, `CallerContract` 에서 `.setNumber()` 와 같이 멤버 메소드를 호출하는 것과 같은 형태로 호출이 가능하다. 이러한 방식의 호출을 **High-Level Call** 이라고 한다.
 
 High-Level Call 은 아래와 같은 동작을 한다.
 
-1. 함수 이름과 파라미터를 인터페이스로 정의하고 호출하면 컴파일러가 함수 이름과 파라미터를 ABI에 맞게 알아서 인코딩해준다.
-2. 실패 시에는 트랜잭션 자체가 `revert` 된다.
+- 함수 이름과 파라미터를 인터페이스로 정의하고 호출하면 컴파일러가 함수 이름과 파라미터를 ABI에 맞게 알아서 인코딩해준다.
+- 실패 시에는 트랜잭션 자체가 `revert` 된다.
 
 반면에 아래와 같이 `call` 을 활용해서 호출하는 경우를 살펴보자.
 
-```solidity ,linenos,hl_lines=14-17
+```solidity ,hl_lines=14-17
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
@@ -193,14 +193,45 @@ contract CallerContract {
 }
 ```
 
-이 경우, `interface` 키워드를 통해 작성해 둔 인터페이스가 없으므로, 개발자가 직접 `abi.encodeWithSignature` 코드를 통해 함수 이름과 파라미터를 인코딩을 명령하고 있다.
+이 경우, `interface` 키워드를 통해 작성해 둔 인터페이스가 없으므로, 개발자가 직접 `abi.encodeWithSignature` 코드를 통해 함수 이름과 파라미터를 인코딩하고 있다.
 
 이렇게 인코딩된 값을 `call` 을 이용하여 **직접** 호출하는 것을 **Low-level Call**이라 한다.
 
 `call`, `staticall`, `delegatecall` 과 같은 Low-Level Call 은 아래와 같은 동작을 한다.
 
-1. 개발자가 직접 함수 시그니처와 파라미터를 `abi.encode`와 같은 메소드를 통해 인코딩해서 `bytes memory`로 넘겨줘야 한다.
-2. 실패시 트랜잭션 자체가 `revert` 되지 않고, 성공/실패 여부도 `bool` 타입으로 개발자가 직접 예외 처리해야 한다. (Silently Fail 될 수 있음을 고려해야 한다)
+- 개발자가 직접 함수 시그니처와 파라미터를 `abi.encode`와 같은 메소드를 통해 인코딩해서 `bytes memory`로 넘겨줘야 한다.
+- 실패시 트랜잭션 자체가 `revert` 되지 않고, 성공/실패 여부도 `bool` 타입으로 개발자가 직접 예외 처리해야 한다. (Silently Fail 될 수 있음을 고려해야 한다)
+
+## `call`, `staticcall`, `delegatecall`
+
+다시 한번 더 정리하면 Low-level Call에 해당하는 세가지 메소드의 공통된 특징은 아래와 같다.
+
+- `address` 타입의 멤버 메소드이다.
+- ABI를 통해 호출이 불가능하거나, 인코딩을 통해 보다 직접적인 제어가 필요한 컨트랙트를 호출하기 위해 사용하는 메소드이다.
+- 실행 시, `bytes memory` 타입의 변수 하나를 파라미터로 취하고, 실행 결과 반환값으로는 `bool`, `bytes memory` 변수 2개를 반환받는다.
+- **low-level function** 이므로 보안을 고려해서 사용해야한다.
+- 개발자가 직접 함수 시그니처와 파라미터를 `abi.encode`와 같은 메소드를 통해 인코딩해서 `bytes memory`로 넘겨줘야 한다.
+- 실패시 트랜잭션 자체가 `revert` 되지 않고, 성공/실패 여부도 `bool` 타입으로 개발자가 직접 예외 처리해야 한다. (Silently Fail 될 수 있음을 고려해야 한다)
+
+아래에서는 Low-level Call에 해당하는 세가지 메소드 각각의 특징에 대해서 간략하게 서술한다.
+
+### `call`
+
+- `address(...).call{value: 1 ether, gas: 10000}("");` 와 같이 `bytes memory` 파라미터를 비워두면 이더만 전송할 수 있고, 보낼 이더 수량과 가스를 지정할 수 있다. (이는 이더 전송시 `send`와 달리 권장되는 방법이다)
+- 다른 컨트랙트의 함수 호출이 가능하다. (하지만 High-level Call을 권장한다)
+- 호출하는 컨트랙트(callee)에 상태 변경 로직이 있으면 callee의 상태가 변경된다.
+
+### `staticcall`
+
+- read-only 버전의 `call`로 이해할 수 있다.
+- 컨트랙트의 `view` 또는 `pure` modifier인 함수를 호출할 때 사용한다.
+- 상태변경이나 상태저장이 발생하면 `revert` 된다.
+
+### `delegatecall`
+
+- 다른 컨트랙트(callee)의 로직을 이용하되, 스토리지는 호출자(caller)의 것을 이용한다.
+- Upgradable Contract를 구현할 때 이용한다.
+- Storage Collision이 일어나지 않도록 주의해서 사용해야 한다.
 
 ---
 
