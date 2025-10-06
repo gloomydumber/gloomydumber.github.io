@@ -24,7 +24,7 @@ address(0xdAC17F958D2ee523a2206206994597C13D831ec7).delegatecall(...);
 
 > In order to interface with contracts that do not adhere to the ABI, or to get more direct control over the encoding, the functions `call`, `delegatecall` and `staticcall` are provided. They all take a single `bytes memory` parameter and return the success condition (as a `bool`) and the returned data (`bytes memory`). The functions `abi.encode`, `abi.encodePacked`, `abi.encodeWithSelector` and `abi.encodeWithSignature` can be used to encode structured data.
 
-이에 따르면, `call`, `staticcall`, `delegatecall` 은 컨트랙트를 ABI(Application Binary Interface)에 관계없이 직접적으로 제어하고자 할 때 사용하는 함수(메소드)들이다. 여기서 **contracts that do not adhere to the ABI** 라는 표현의 뉘앙스가 조금 이해하기 어렵다. 직역했을 때 **ABI를 따르지 않는** 혹은 **ABI를 고수하지 않는** 컨트랙트란, **ABI를 통한 호출이 불가능한 컨트랙트** 라는 뜻이다. 일반적으로 컨트랙트를 Solidity나 Vypher를 통해 작성하고 컴파일하는 경우에 자연스레 ABI가 함께 생성되며, 컨트랙트를 직접 raw-level의 바이트코드로 작성하는 경우 등 아주 특이한 경우에만 ABI를 통한 컨트랙트 호출이 불가능하다.
+이에 따르면, `call`, `staticcall`, `delegatecall` 은 컨트랙트를 ABI(Application Binary Interface)에 관계없이 직접적으로 제어하고자 할 때 사용하는 함수(메소드)들이다. 여기서 **contracts that do not adhere to the ABI** 라는 표현의 뉘앙스가 조금 이해하기 어렵다. 직역했을 때 **ABI를 따르지 않는** 혹은 **ABI를 고수하지 않는** 컨트랙트란, **ABI를 통한 호출이 불가능한 컨트랙트** 라는 뜻이다. 일반적으로 컨트랙트를 Solidity나 Vypher를 통해 작성하고 컴파일하는 경우에 자연스레 ABI가 함께 생성되며, 컨트랙트를 직접 raw-level의 바이트코드로 작성하는 경우 등 아주 특이한 경우에만 ABI를 통한 컨트랙트 호출이 불가능하다. (혹자는 바이트코드로 컨트랙트를 작성하는게 특이하지 않다고 할 수도 있다)
 
 {% detail(title="일반적인 상황이 아니라서, 크게 고려하지 않아도 되지만 다음과 같은 컨트랙트 코드가 ABI를 통한 호출이 불가능한 컨트랙트의 예이다.") %}
 
