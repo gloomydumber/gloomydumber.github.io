@@ -178,3 +178,15 @@ LLM의 유료 플랜을 사용할 수 있도록 해주는 AI Booster Pack 이라
 API 요청 상황을 집계하고 관리할 수 있는 대시보드를 사용하는 상품도 따로 존재한다.
 
 ![readmeDevDash](img/readmeDevDash.png)
+
+## Clone-Documentation 결과
+
+너무 ReadMe의 기능에 대해서만 쓴 것 같아 Clone-Documnetaion을 진행함에 있어서 Binance API 문서의 구조나 내용에 대해서 하찮은 내용이지만 조금 써두어야겠다.
+
+Docusaurus를 사용한 신버전의 Binance API 문서만 읽어가며 진행한게 아니라, Slate를 사용한 구버전의 Binance 문서와 비교해서 읽어가며 ReadMe로 작성했다. 영문이다 보니 내가 직접 내용적으로 크게 손댈 수 있는 부분은 없었지만, 신버전으로 옮기면서 글의 배치나 내용이 약간씩 달라져서 향상됐다는게 느껴졌다. 몇 개 부분은 구 버전을 따라서 쓰긴 했지만, 대부분 자연스레 신버전을 따라서 작성하게 되었다. 구버전의 예를 따른 것으로는 구버전 Slate에서 Callout을 사용한 부분은 신버전에서는 Docusaurus의 admonitions을 사용하면 되는데 의도가 있는지는 모르겠지만 평문 그대로 작성된 부분이 있었다. 그걸 보고 여전히 중요한 구문이라고 생각해서 나는 ReadMe의 Callout Component로 표기했다.
+
+{{ figure(src="./img/binanceDocsOld.png", alt="binanceDocsOld", caption="ReadMe의 Callout Component를 이용") }}
+
+{{ figure(src="./img/binanceDocsNew.png", alt="binnanceDocsNew", caption="신버전에서는 admonitions 처리 없이 Bold만 적용") }}
+
+이 글에서 다룬 것 말고도 ReadMe의 기능은 상당히 다양하다. 다양한 기능 업데이트가 상당히 꾸준하고 빠르게 이루어지고 있다. ReadMe의 문서를 보면 각 페이지마다 최근 수정일자가 적혀있는데 대 부분 몇 주전이고 늦어야 몇 달전이다. 기능 업데이트도 잘 되고 있지만 문서도 그에 따라 최신화가 잘 이루어진다는 뜻이겠지.
