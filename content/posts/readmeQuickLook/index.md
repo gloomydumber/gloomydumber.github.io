@@ -8,13 +8,13 @@ comment = true
 
 Binance API 문서에 사용된 SSG가 Slate에서 Docusaurus로 업데이트 된 것에 대해 [블로그 아티클](https://gloomydumber.github.io/posts/binancedocsupdatemisc/)로 다뤄보면서, 이전부터 문서 생성에 있어서 좋은 프로덕트라고 생각한 [ReadMe.io](https://readme.com/)에 대해 알아보고 싶었다.
 
-해당 플랫폼을 사용한 서비스를 최초로 접한건 Upbit API 문서에서였다. 초기에는 별 생각이 없었는데, 어느 버전 이후에 아래와 같이 언어별로 Request Code Sample 섹션이 제공될 때, 무슨 설루션을 사용한건가 싶어서 찾아보고 해당 UI/UX에 감동하고는 ReadMe.io 라는 문서화 플랫폼을 기억해두고 있었다.
+해당 플랫폼을 사용한 서비스를 최초로 접한건 Upbit API 문서에서였다. 초기에는 별 생각이 없었는데, 특정 버전 이후부터 아래와 같이 언어별로 Request Code Sample 섹션 기능이 제공되었는데, 이게 무슨 문서화 설루션을 사용해서 구현된 기능인지 싶어서 찾아보고 ReadMe.io 라는 이름의 문서화 플랫폼을 기억해두고 있었다.
 
 ![readmeRequestSampleCode](img/readmeRequestSampleCode.gif)
 
 ReadMe라는 이름 자체가 프로그램이나 프로젝트의 사용법, 설치 안내, 저작권과 같은 여러 메타데이터 등의 정보를 포함하는 파일의 이름으로 쓰이다보니 SEO에 굉장히 불리할 것 같은데 왜 굳이 그렇게 이름지었나 싶은 생각이 들긴했다. 실제로 구글에 ReadMe에 대해서 검색해보면 해당 문서화 플랫폼을 다룬 내용이나 정보 보다는 파일 이름으로써의 readme, 그러니까 *readme.md 작성법* 과 같은 내용의 결과가 많았다. 이 때문에 LLM에 질문을 하거나 할때는 햇갈릴 수 있으니 굳이 ReadMe.io 라고 전체 도메인 주소로 작성하거나 부연설명을 한다. 비록 SEO 측면에서는 다소 불리할 수 있지만, ‘ReadMe’라는 이름은 문서화 플랫폼의 브랜드명으로서는 충분히 적절해 보인다. ReadMe는 프로덕트가 존재하면 항상 작성해야하니까— (비슷한 사례로 Cursor는 성공적인 네이밍인 것 같다)
 
-어쨌든, ReadMe의 기능에 대해 적당히 문서를 훑어보고 Binance API를 ReadMe를 통해 다시 작성해보면 ReadMe의 장단점을 알 수 있을 것 같아서 소위 Clone-Documentation을 해보았다. 학습 목적으로 Clone-Coding을 많이하니까 비슷한 결로 Clone-Documentation을 해보면 배우는게 있을 것 같았다. 물론, 문서의 내용을 있는 그대로 갖다 쓰는건 단순한 마이그레이션에 불과할 것이다. 그래서 문서 내용 그 자체보다는 ReadMe의 기능에 대해서 가볍게 알아보는 것을 목표로 했다.
+어쨌든, ReadMe의 기능에 대해 적당히 문서를 훑어보고 Binance API를 ReadMe를 통해 다시 작성해보면 ReadMe의 장단점을 알 수 있을 것 같아서 소위 Clone-Documentation을 해보았다. 학습 목적으로 Clone-Coding을 많이하니까 비슷한 결로 Clone-Documentation을 해보면 배우는게 있을 것 같았다. 물론, 문서의 내용을 있는 그대로 갖다 쓰는건 단순한 마이그레이션에 불과할 것이다. 그래서 Clone-Documentation을 하되, ReadMe의 몰랐던 기능을 가볍게 활용해보는 것을 주목표로 했다.
 
 ## ReadMe Refactored
 
@@ -74,7 +74,7 @@ MDX Component 기능 중에 가장 아쉬운 점은 외부 라이브러리의 �
 
 ReadMe는 위 예제 컴포넌트 코드에서 확인할 수 있듯이 Tailwind CSS를 지원하는데, 사실 지원한다고 표현하지만 강제한다고 표현할 수도 있을 것 같다. ReadMe Markdown 파서에서 [Tailwind 관련 Processor](https://github.com/readmeio/markdown/blob/4e13b19ee43f2ead9413810fa06c02e4c45b11fb/processor/transform/tailwind.tsx)가 항상 동작하고 있기 때문이다.
 
-아무튼 ReadMe Markdown이라는 파서가 강제된다는 점은 단점인 것 같다.
+아무튼 ReadMe Markdown이라는 파서가 강제되어 문서 변환 과정을 커스텀하게 우회할 수 없는 부분은 단점인 것 같다.
 
 사실 Binance API를 옮겨 적으면서는 Custom MDX Component를 작성할 일은 없었다. 대신에 블록체인 관련하여 접한게 많다보니 샌드박스 환경에서 WebAssembly 등을 통해 Solidity 컴파일하고 실행하는 과정을 문서 상에서 보여주고 싶은 욕심이 생겨서 관련된 컴포넌트를 작성할 수 있을까하고 조사해봤는데 역시 기술적으로 어려운 것 같다. 차선책으로는 `iframe` 을 통해 gist로 미리 작성된 Solidity 코드를 Remix 에디터로 띄워주는 것이었는데, 띄워지긴 하는데 UX가 영 나쁘다.
 
@@ -82,7 +82,7 @@ ReadMe는 위 예제 컴포넌트 코드에서 확인할 수 있듯이 Tailwind 
 
 [Docs as Code](https://www.writethedocs.org/guide/docs-as-code/#docs-as-code)는 기술 문서를 소스 코드처럼 관리하는 철학으로, ReadMe에서는 Bidirectional Sync with Github 기능을 통해서 실현할 수 있게 되었다. Bidirectional Sync with Github 기능에 따른 Repository의 구조는 [ReadMe Docs | Documentation Structure](https://docs.readme.com/main/docs/documentation-structure)에 잘 명세되어있다.
 
-매일 배운 개념을 Github의 TIL(Today I Learned) Private Repository에 Markdown 형식으로 저장하는 버릇이 있는데, 그 버릇 덕분인지 VS Code와 같은 코드 편집기에서 문서를 작성하는 것이 굉장히 편하게 느껴졌다. 다만, 몇가지 주의할 점이 있는데, 공식 문서 [ReadMe Docs | Troubleshoot MDX Errors](https://docs.readme.com/main/docs/rendering-errors-invalid-mdx#closing-tags) 에서 다루는 것과 같이 HTML 태그를 나타내는 '<'와 같은 몇몇 문자들을 '\\<' '\&lt;' 와 같은 식으로 잘 표기해야 할 때가 있다.
+매일 새로 공부한 것이 있으면 Github의 TIL(Today I Learned) Private Repository에 Markdown 형식으로 저장하는 버릇이 있는데, 그 버릇 덕분인지 VS Code와 같은 코드 편집기에서 문서를 작성하는 것이 굉장히 편하게 느껴졌다. 다만, 몇가지 주의할 점이 있는데, 공식 문서 [ReadMe Docs | Troubleshoot MDX Errors](https://docs.readme.com/main/docs/rendering-errors-invalid-mdx#closing-tags) 에서 다루는 것과 같이 HTML 태그를 나타내는 '<'와 같은 몇몇 문자들을 '\\<' '\&lt;' 와 같은 식으로 잘 표기해야 할 때가 있다.
 
 다음으로는 사실 ReadMe의 문제라기보다는 Prettier의 문제인데, ReadMe에는 다음과 같은 [Tabbed Code Block](https://docs.readme.com/rdmd/docs/code-blocks#tabbed-code-blocks) 기능이 있다.
 
@@ -115,17 +115,17 @@ ReadMe는 위 예제 컴포넌트 코드에서 확인할 수 있듯이 Tailwind 
 
 또 달리 고려할 점으로는, ReadMe 계정과 Github 계정이 연동되는 것이 아니라, ReadMe 계정과 Github Repository가 연동되는 개념이라 Git에서 변경사항 발생시 이메일 단위로 기록되어서 ReadMe 계정 이메일과 Github 계정 이메일을 일치시켜서 사용하는 것이 좋을 것 같다.
 
-브랜치 관리 기능은 Docs as Code의 핵심 부분에 해당하지만 브랜치 기능은 유료 버전에서 지원하기 때문에 직접 경험해보지는 못했다. 다만 공식 문서의 관련 명세를 보니 지원이 잘 되고 있는 것 같다. 실제 배포전에 `dev` 브랜치에 올려놓고 리뷰를 받는 것 처럼 문서도 여러 작업자에 의해서 검토받을 수 있게 되어있다.
+브랜치 관리 기능은 Docs as Code의 핵심 부분에 해당하지만 브랜치 기능은 유료 버전에서 지원하기 때문에 직접 경험해보지는 못했다. 다만 공식 문서의 관련 명세를 보니 지원이 잘 되고 있는 것 같다. 실제 배포전에 `dev` 브랜치에 올려놓고 리뷰 받는 것 처럼 문서도 여러 작업자에 의해서 검토받을 수 있게 되어있다.
 
 ## Online Editor 사용기
 
-코드 에디터 환경에서 문서를 작성하는 데에는 거의 불편함을 느끼지 않았다. 코드 에디터 환경과 온라인 에디터 환경 둘 중에 하나만 사용해야한다면 코드 에디터 환경을 택할 것이다. 그럼에도 새로운 기능 같은 것들은 온라인 에디터를 통해서 먼저 만져보고 수정사항을 반영하면 해당 내역이 Github Repository로 연동되어서 새로운 기능이 코드 에디터에서 코드 상으로는 어떻게 반영되는지 볼 수 있어서 한 번씩 온라인 에디터를 써야할 것 같다. 또, 온라인 에디터 환경도 UI가 우수한 편이라 주력으로도 쓸만해보인다.
+코드 에디터 환경에서 문서를 작성하는 데에는 거의 불편함을 느끼지 않았다. 코드 에디터 환경과 온라인 에디터 환경 둘 중에 하나만 사용해야한다면 코드 에디터 환경을 택할 것이다. 그럼에도 새로운 기능 같은 것들은 온라인 에디터를 통해서 먼저 만져보고 수정사항을 반영하면 해당 내역이 Github Repository로 연동되어서 새로운 기능이 코드 에디터에서 코드 상으로는 어떻게 반영되는지 볼 수 있어서 한 번씩 온라인 에디터를 써야할 것 같다. 온라인 에디터 환경도 UI가 우수한 편이라 주력으로도 쓸만해보인다.
 
 그럼에도 치명적인 문제가 있는데, 역시 네트워크 환경이 좋지 않으면 커서가 순간이동하거나 그에 따라 작성된 글도 순간이동하는 경우가 있다. 노션에서도 이런 현상이 가끔 있었는데 웹에서 사용하는 에디터의 특성상 어쩔 수 없는 문제인 듯하다. 더 큰 문제는 알 수 없는 문제로 한 번씩 아래와 같은 오류가 생긴다는 것이다.
 
 ![readmeOnlineError](img/readmeOnlineError.png)
 
-작성 중인 내용이 모두 없어지고, 부엉이 마스코트와 함께 'Don't worry, your content is safe. Try refreshing the page, or switch to the raw mode editor.' 라고 뜨는데, 'raw mode'로 진입해도 안뜨길래 새로고침 했더니 수정하고 저장하지 않았던 글들이 모두 증발했다. 네트워크 환경이 영향을 끼쳤을 수도 있고, 온라인 에디터 특성상 여러 기능을 지원하다보니 오류가 생긴 것 같기도하다.
+작성 중인 내용이 모두 없어지고, 부엉이 마스코트와 함께 'Don't worry, your content is safe. Try refreshing the page, or switch to the raw mode editor.' 라고 뜨는데, 'raw mode'로 진입해도 안뜨길래 새로고침 했더니 저장하지 않았던 작성중인 글들이 모두 증발했다. 네트워크 환경이 영향을 끼쳤을 수도 있고, 온라인 에디터 특성상 여러 기능을 지원하다보니 오류가 생긴 것 같기도하다.
 
 {{ figure(src="./img/ieErrorSend.png", alt="ieErrorSend", caption="Internet Explorer 오류 보고 보냄...") }}
 
@@ -181,12 +181,12 @@ API 요청 상황을 집계하고 관리할 수 있는 대시보드를 사용하
 
 ## Clone-Documentation 결과
 
-너무 ReadMe의 기능에 대해서만 쓴 것 같아 Clone-Documnetaion을 진행함에 있어서 Binance API 문서의 구조나 내용에 대해서 하찮은 내용이지만 조금 써두어야겠다.
+너무 ReadMe의 기능에 대해서만 쓴 것 같아 Clone-Documnetaion을 진행함에 있어서 Binance API 문서의 구조나 내용에 대해서 언급할 부분은 하찮은 수준이지만 아래와 같은 경우가 있었다.
 
-Docusaurus를 사용한 신버전의 Binance API 문서만 읽어가며 진행한게 아니라, Slate를 사용한 구버전의 Binance 문서와 비교해서 읽어가며 ReadMe로 작성했다. 영문이다 보니 내가 직접 내용적으로 크게 손댈 수 있는 부분은 없었지만, 신버전으로 옮기면서 글의 배치나 내용이 약간씩 달라져서 향상됐다는게 느껴졌다. 몇 개 부분은 구 버전을 따라서 쓰긴 했지만, 대부분 자연스레 신버전을 따라서 작성하게 되었다. 구버전의 예를 따른 것으로는 구버전 Slate에서 Callout을 사용한 부분은 신버전에서는 Docusaurus의 admonitions을 사용하면 되는데 의도가 있는지는 모르겠지만 평문 그대로 작성된 부분이 있었다. 그걸 보고 여전히 중요한 구문이라고 생각해서 나는 ReadMe의 Callout Component로 표기했다.
+Docusaurus를 사용한 신버전의 Binance API 문서만 읽어가며 진행한게 아니라, Slate를 사용한 구버전의 Binance 문서와 비교해서 읽어가며 ReadMe로 작성하는 식으로 Clone-Doucumetantion을 진행했다. 문서가 영문으로 작성되어있다보니 내가 직접 내용적으로 크게 손댈 수 있는 부분은 없었지만, 신버전으로 옮기면서 글의 배치나 내용이 약간씩 달라져서 향상됐다는게 느껴졌다. 일부는 구버전을 따라서 쓰긴 했지만, 대부분 자연스레 신버전을 따라서 작성하게 되었다. 구버전의 예를 따른 것으로는 구버전 Slate에서 Callout을 사용한 부분은 신버전에서는 Docusaurus의 admonitions을 사용하면 되는데 의도가 있는지는 모르겠지만 평문 그대로 작성된 부분이 있었다. 그걸 보고 여전히 중요한 구문이라고 생각해서 나는 ReadMe의 Callout Component로 표기했다.
 
 {{ figure(src="./img/binanceDocsOld.png", alt="binanceDocsOld", caption="ReadMe의 Callout Component를 이용") }}
 
 {{ figure(src="./img/binanceDocsNew.png", alt="binnanceDocsNew", caption="신버전에서는 admonitions 처리 없이 Bold만 적용") }}
 
-이 글에서 다룬 것 말고도 ReadMe의 기능은 상당히 다양하다. 다양한 기능 업데이트가 상당히 꾸준하고 빠르게 이루어지고 있다. ReadMe의 문서를 보면 각 페이지마다 최근 수정일자가 적혀있는데 대 부분 몇 주전이고 늦어야 몇 달전이다. 기능 업데이트도 잘 되고 있지만 문서도 그에 따라 최신화가 잘 이루어진다는 뜻이겠지.
+이 글에서 다룬 것 말고도 ReadMe의 기능은 상당히 다양하다. 다양한 기능 업데이트가 상당히 꾸준하고 빠르게 이루어지고 있다. ReadMe의 문서를 보면 각 페이지마다 최근 수정일자가 적혀있는데 대 부분 몇 주전이고 늦어야 몇 달전이다. 기능 업데이트도 잘 되고 있지만 문서도 그에 따라 최신화가 잘 이루어진다는 뜻이다. 아쉬운 부분도 있지만 점점 발전하는 개발자 경험(DX) 관련 툴들이 감동을 주는 것 같아 앞으로가 기대된다. Customizable Component 기능이 향상되서 기깔나는 DX를 선사해주는 문서가 생성 될 수 있었으면 좋겠다.
