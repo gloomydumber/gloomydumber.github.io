@@ -8,7 +8,7 @@ comment = true
 
 Binance API 문서에 사용된 SSG가 Slate에서 Docusaurus로 업데이트 된 것에 대해 [블로그 아티클](https://gloomydumber.github.io/posts/binancedocsupdatemisc/)로 다뤄보면서, 이전부터 문서 생성에 있어서 좋은 프로덕트라고 생각한 [ReadMe.io](https://readme.com/)에 대해 알아보고 싶었다.
 
-해당 플랫폼을 사용한 서비스를 최초로 접한건 Upbit API 문서에서였다. 초기에는 별 생각이 없었는데, 특정 버전 이후부터 아래와 같이 언어별로 Request Code Sample 섹션 기능이 제공되었는데, 이게 무슨 문서화 설루션을 사용해서 구현된 기능인지 싶어서 찾아보고 ReadMe.io 라는 이름의 문서화 플랫폼을 기억해두고 있었다.
+해당 플랫폼을 사용한 서비스를 최초로 접한건 Upbit API 문서에서였다. 초기에는 별 생각이 없었는데, 특정 버전 이후부터 아래와 같이 언어별로 Request Code Sample 섹션 기능이 제공되었는데, 이게 어떤 문서화 설루션을 사용해서 구현된 기능인지 싶어서 찾아보고 ReadMe.io 라는 이름의 문서화 플랫폼을 기억해두고 있었다.
 
 ![readmeRequestSampleCode](img/readmeRequestSampleCode.gif)
 
@@ -66,7 +66,7 @@ export const ExampleComponent = props => {
 </ExampleComponent>
 ```
 
-최상단에 `name` 이 따로 YAML frontmatter로 작성되어있는 것 외에는 온라인 에디터와 별다른 점은 없다. 코드 에디터로 작성한다면 온라인 에디터처럼 프리뷰를 통해 렌더링 결과를 바로 확인 수 없지만 말그대로 코드를 Code를 작성하는 데 특화된 Code Editor에서 작성하는 이점은 있다.
+온라인 에디터에서 확인하는 코드는 최상단에 `name` 이 따로 YAML frontmatter로 작성되어있는 것이 없는데, `.mdx` 파일이다보니 코드 에디터는 YAML frontmatter가 있다. 코드 에디터로 작성한다면 온라인 에디터처럼 프리뷰를 통해 렌더링 결과를 바로 확인 수 없지만 말그대로 코드를 Code를 작성하는 데 특화된 Code Editor에서 작성하는 이점은 있다.
 
 MDX Component 기능 중에 가장 아쉬운 점은 외부 라이브러리의 임포트가 되지 않는다는 점이다. 특히, ReadMe는 Markdown 파서로 [ReadMe Markdown](https://github.com/readmeio/markdown) 이라는 파서를 사용해서 Markdown을 HTML로 변환한다. MDX Component를 작성하면 이 ReadMe Markdown이라는 파서가 해당 MDX Component를 처리하는데, 문서 작성자 내지는 개발자가 그 처리 과정에 개입할 방법이 없기 때문에 한정된 수준의 커스텀 컴포넌트만 개발할 수 있는 것이다. 이 ReadMe Markdown 파서는 [remark](https://github.com/remarkjs/remark)에서 수정된 형태로 구성되었는데, Docusarus의 경우에도 remark를 사용하다보니 컴포넌트 커스터마이징에 한계가 있는 것 같다. 그런데 Docusaurus의 경우에는 문서에 따르면 remark 생태계의 다양한 plugin은 사용할 수 있도록 지원한다. Readme Markdown 파서는 그마저도 불가능한듯하다. Docusaurus에서의 커스터마이징은 직접 깊이있게 해보진 못했고, [LY Corp. Tech Blog | 기술 문서 사이트로 Docusaurus 활용하기](https://techblog.lycorp.co.jp/ko/docusaurus-as-a-technical-document-website) 글에서 읽고 ReadMe의 경우를 비교하고 살펴보게 되었다.
 
@@ -125,7 +125,7 @@ ReadMe는 위 예제 컴포넌트 코드에서 확인할 수 있듯이 Tailwind 
 
 ![readmeOnlineError](img/readmeOnlineError.png)
 
-작성 중인 내용이 모두 없어지고, 부엉이 마스코트와 함께 'Don't worry, your content is safe. Try refreshing the page, or switch to the raw mode editor.' 라고 뜨는데, 'raw mode'로 진입해도 안뜨길래 새로고침 했더니 저장하지 않았던 작성중인 글들이 모두 증발했다. 네트워크 환경이 영향을 끼쳤을 수도 있고, 온라인 에디터 특성상 여러 기능을 지원하다보니 오류가 생긴 것 같기도하다.
+작성 중인 내용이 모두 없어지고, ReadMe의 부엉이 마스코트 Owlbert와 함께 'Don't worry, your content is safe. Try refreshing the page, or switch to the raw mode editor.' 라고 뜨는데, 'raw mode'로 진입해도 안뜨길래 새로고침 했더니 저장하지 않았던 작성중인 글들이 모두 증발했다. 네트워크 환경이 영향을 끼쳤을 수도 있고, 온라인 에디터 특성상 여러 기능을 지원하다보니 오류가 생긴 것 같기도하다.
 
 {{ figure(src="./img/ieErrorSend.png", alt="ieErrorSend", caption="Internet Explorer 오류 보고 보냄...") }}
 
@@ -187,6 +187,6 @@ Docusaurus를 사용한 신버전의 Binance API 문서만 읽어가며 진행�
 
 {{ figure(src="./img/binanceDocsOld.png", alt="binanceDocsOld", caption="ReadMe의 Callout Component를 이용") }}
 
-{{ figure(src="./img/binanceDocsNew.png", alt="binnanceDocsNew", caption="신버전에서는 admonitions 처리 없이 Bold만 적용") }}
+{{ figure(src="./img/binanceDocsNew.png", alt="binnanceDocsNew", caption="신버전에서는 admonitions 처리 없이 글자 Bold 처리만 함") }}
 
-이 글에서 다룬 것 말고도 ReadMe의 기능은 상당히 다양하다. 다양한 기능 업데이트가 상당히 꾸준하고 빠르게 이루어지고 있다. ReadMe의 문서를 보면 각 페이지마다 최근 수정일자가 적혀있는데 대 부분 몇 주전이고 늦어야 몇 달전이다. 기능 업데이트도 잘 되고 있지만 문서도 그에 따라 최신화가 잘 이루어진다는 뜻이다. 아쉬운 부분도 있지만 점점 발전하는 개발자 경험(DX) 관련 툴들이 감동을 주는 것 같아 앞으로가 기대된다. Customizable Component 기능이 향상되서 기깔나는 DX를 선사해주는 문서가 생성 될 수 있었으면 좋겠다.
+이 글에서 다룬 것 말고도 ReadMe의 기능은 상당히 다양하다. 다양한 기능 업데이트가 상당히 꾸준하고 빠르게 이루어지고 있다. ReadMe의 문서를 보면 각 페이지마다 최근 수정일자가 적혀있는데 대 부분 몇 주전으로 최근에 업데이트 되어있고 늦어야 몇 달전이다. 기능 업데이트도 잘 되고 있지만 문서도 그에 따라 최신화가 잘 이루어진다는 뜻이다. 아쉬운 부분도 있지만 점점 발전하는 개발자 경험(DX) 관련 툴들이 감동을 주는 것 같아 앞으로가 기대된다. Customizable Component 기능이 향상되서 기깔나는 DX를 선사해주는 문서가 생성 될 수 있었으면 좋겠다.
