@@ -122,7 +122,7 @@ comment = true
 
 ## Chrome DevTools MCP
 
-[Chrome 개발자 블로그 | AI 에이전트를 위한 Chrome DevTools (MCP)](https://developer.chrome.com/blog/chrome-devtools-mcp?hl=ko)에 따르면 2025년 9월 23일에 Chrome DevTools 모델 컨텍스트 프로토콜 (MCP) 서버가 출시되었다. 잘 활용하면 개발자도구에서 하던 일이 이제 프롬프트로 모두 명령을 내릴 수 있을 것 같다.
+[Chrome 개발자 블로그 | AI 에이전트를 위한 Chrome DevTools (MCP)](https://developer.chrome.com/blog/chrome-devtools-mcp?hl=ko)에 따르면 2025년 9월 23일에 Chrome DevTools 모델 컨텍스트 프로토콜 (MCP) 서버가 출시되었다. 잘 활용하면 개발자도구에서 하던 일이 모두 프롬프트로 명령을 내리는 방식으로 바뀔 수 있을 것 같다.
 
 ---
 
