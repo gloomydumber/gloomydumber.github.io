@@ -77,7 +77,7 @@ comment = true
 
 ## JavaScript Snippet 기능
 
-아래와 같이 개발자 도구를 열고 `Cmd(Ctrl) + Shift + P`를 입력해서 `Create new snippet` 을 입력하면 JavaScript Snippet을 작성하여 브라우저에 저장할 수 있다. 필요할 때 마다 불러와 쓸 수 있다.
+아래와 같이 개발자 도구를 열고 `Cmd(Ctrl) + Shift + P`를 입력해서 `Create new snippet` 을 입력하면 JavaScript Snippet을 작성하여 브라우저에 저장하여 필요할 때 마다 불러와 쓸 수 있다.
 
 ![createSnippet](img/createSnippet.png)
 
@@ -124,7 +124,7 @@ comment = true
 
 [Chrome 개발자 블로그 | AI 에이전트를 위한 Chrome DevTools (MCP)](https://developer.chrome.com/blog/chrome-devtools-mcp?hl=ko)에 따르면 2025년 9월 23일에 Chrome DevTools 모델 컨텍스트 프로토콜 (MCP) 서버가 출시되었다. 잘 활용하면 개발자도구에서 하던 일이 이제 프롬프트로 모두 명령을 내릴 수 있을 것 같다.
 
-## References
+---
 
 - [Chrome Docs | 명령어 메뉴에서 명령어 실행](https://developer.chrome.com/docs/devtools/command-menu/)
 - [Chrome 개발자 블로그 (업데이트 후 새로운 기능에 대해 다룬 아티클이 올라온다)](https://developer.chrome.com/blog?hl=ko)
