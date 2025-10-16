@@ -477,7 +477,7 @@ func NewBlock(header *Header, body *Body, receipts []*Receipt, hasher TrieHasher
 }
 ```
 
-다시, `DeriveSha()` 함수의 정의를 살펴볼 수도 있겠지만, 해당 아티클에서는 Arbitrum Sequencer Feed를 통한 검증을 다루고자 하므로, 더 깊이 서술하지는 않고, `DeriveSha()` 함수의 첫 번째 인자로는 트랜잭션들이 전달되고, 두 번째 인자로는 `trie.NewStackTrie(nil)` 가 전달되어야 트랜잭션의 Merkle Trie Root인,`Transactions Root`가 계산된다는 것만 알아두자.
+더 깊이 나아가서 `DeriveSha()` 함수의 정의를 살펴볼 수도 있겠지만, 해당 아티클에서는 Arbitrum Sequencer Feed를 통한 검증을 다루고자 하므로 세부 로직은 생략한다. `DeriveSha()` 함수의 첫 번째 인자로는 트랜잭션들이 전달되고, 두 번째 인자로는 `trie.NewStackTrie(nil)` 가 전달되어야 트랜잭션의 Merkle Trie Root인,`Transactions Root`가 계산된다는 것만 알아두자.
 
 그런데, 실제 Arbitrum의 Block의 생성이 될 때에는, 아래와 같은 [코드](https://github.com/OffchainLabs/nitro/blob/master/arbos/block_processor.go#L200)로, 기존 처리될 트랜잭션들의 가장 맨 앞에 `Start Block` 이라는 트랜잭션이 삽입되게 된다.
 
@@ -558,7 +558,7 @@ func InternalTxStartBlock(
 
 ## WASM Compile
 
-이렇게 go 언어로 작성된 트랜잭션 파싱 과정을 웹 어셈블리 언어로 컴파일하면 웹에서도 사용할 수 있다. 내가 직접 작성한 [arbfeedtowasm](https://github.com/gloomydumber/arbfeedtowasm) 이라는 레포지토리에서 작성한 아래와 같은 Go 코드를 컴파일하면 Arbitrum Sequencer Feed 메시지를 파싱하는 `.wasm` 파일을 생성할 수 있다. 파싱에 사용된 함수는 모두 Nitro를 git submodule로 임포트하여 과정을 진행하였다.
+이렇게 Go 언어로 작성된 트랜잭션 파싱 과정을 웹 어셈블리 언어로 컴파일하면 웹에서도 사용할 수 있다. 내가 직접 작성한 [arbfeedtowasm](https://github.com/gloomydumber/arbfeedtowasm) 이라는 레포지토리에서 작성한 아래와 같은 Go 언어 코드를 컴파일하면 Arbitrum Sequencer Feed 메시지를 파싱하는 `.wasm` 파일을 생성할 수 있다. 파싱에 사용된 함수는 모두 Nitro를 git submodule로 설정하고 임포트하여 과정을 진행하였다.
 
 ```go
 package jsutil
@@ -624,4 +624,4 @@ Go 언어에서 웹 어셈블리로의 컴파일은 아래와 같은 명령어�
 $ GOJS=js GOARCH=wasm go build -o {resultFileName}.wasm {originFileName}.go
 ```
 
-컴파일 된 `.wasm` 파일을 이용해, 웹 환경에서 WebSocket으로 Arbitrum Sequencer Feed를 수신한 결과를 파싱하고, 또 그 파싱한 결과를 Arbitrum RPC Node에 요청한 결과와 비교하여 검증할 수 있다.
+컴파일 된 `.wasm` 파일을 이용하면 웹 환경에서 WebSocket으로 Arbitrum Sequencer Feed를 수신한 결과를 파싱하고, 또 그 파싱한 결과와 Arbitrum RPC Node에 요청한 결과를 비교하여 검증할 수 있다.
