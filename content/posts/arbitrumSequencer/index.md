@@ -526,7 +526,7 @@ func InternalTxStartBlock(
 - `l1BaseFee` : Sequencer Feed 에서 `baseFeeL1` 필드의 값으로 얻을 수 있음
 - `l1BlockNum` : Sequencer Feed 에서 `blockNumber` 필드의 값으로 얻을 수 있음
 - `l2BlockNum` : Sequencer Feed 에서 `sequenceNumber` 필드의 값에 `22207817` (Arbitrum One Genesis Block Number) 를 더한 값으로 얻을 수 있음 (이는 앞서 언급한 Arbitrum Official document의 [How to read sequencer feed](https://docs.arbitrum.io/run-arbitrum-node/sequencer/read-sequencer-feed)에 설명되어 있다)
-- `timePassed` : Sequencer Feed 에서 해당 메시지 `timestamp` 필드의 값에서 해당 메시지 바로 직전의 `timestamp` 필드의 값을 뺀 값으로 얻을 수 있음
+- `timePassed` : Sequencer Feed 에서 해당 메시지 `timestamp` 필드의 값에서 해당 메시지 바로 직전에 수신한 메시지의 `timestamp` 필드의 값을 뺀 값으로 얻을 수 있음 (즉, 메시지 검증을 위해서는 검증하고자 할 메시지의 바로 직전 메시지의 `timestamp` 값이 필요하다)
 
 ```json
 {
