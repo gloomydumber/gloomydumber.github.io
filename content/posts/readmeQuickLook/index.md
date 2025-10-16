@@ -111,7 +111,7 @@ ReadMe는 위 예제 컴포넌트 코드에서 확인할 수 있듯이 Tailwind 
     ```
 ```
 
-끝나는 \``` 와 시작하는 \```를 한 줄 띄워줘버린다. Prettier의 설정을 바꾸면 될일이지만, 그마저도 귀찮아서 코드 블록 탭이 있는 문서에 대해서만 CTRL(CMD) + SHIFT + P 후에 Save without Formatting을 타입하는 수고를 했다. 아무래도 문서 작성할 일이 늘면 이런저런 Syntax를 고려한 Prettier 설정을 해주긴 해야할 것 같다.
+끝나는 \``` 와 시작하는 \```를 한 줄 띄워줘버린다. Prettier의 설정을 바꾸면 될일이지만, 그마저도 귀찮아서 코드 블록 탭이 있는 문서에 대해서만 Cmd(Ctrl) + Shift + P 를 눌러 커맨드 팔레트를 띄워서 Save without Formatting을 통해 저장하는 수고를 했다. 아무래도 문서 작성할 일이 늘면 이런저런 Syntax를 고려한 Prettier 설정을 해주긴 해야할 것 같다.
 
 또 달리 고려할 점으로는, ReadMe 계정과 Github 계정이 연동되는 것이 아니라, ReadMe 계정과 Github Repository가 연동되는 개념이라 Git에서 변경사항 발생시 이메일 단위로 기록되어서 ReadMe 계정 이메일과 Github 계정 이메일을 일치시켜서 사용하는 것이 좋을 것 같다.
 
