@@ -495,7 +495,7 @@ txes = append(types.Transactions{types.NewTx(startTx)}, txes...)
 
 `Start Block` 트랜잭션이 생성되는 Nitro의 구현은 `InternalTxStartBlock()` 함수 등으로 이루어져 있고, [코드](https://github.com/OffchainLabs/nitro/blob/4941f52a1eab6002feff07146f0937dfd4ce53d6/arbos/internal_tx.go#L24)는 아래 같다.
 
-```go
+```go,hl_lines=15
 func InternalTxStartBlock(
 	chainId,
 	l1BaseFee *big.Int,
