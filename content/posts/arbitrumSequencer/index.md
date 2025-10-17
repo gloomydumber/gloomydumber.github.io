@@ -181,7 +181,7 @@ func ParseL2Transactions(msg *arbostypes.L1IncomingMessage, chainId *big.Int) (t
 }
 ```
 
-Arbitrum의 Transaction Type은 아래와 같이 기존 Geth에서 정의된 것들에 더해, Arbitrum Nitro에서 특별히 정의한 유형이 더 추가되었다. 당연한 얘기지만 각각의 Transaction Type마다 역할과 의미가 다르다. `ParseL2Transactions()` 함수의 8번째 줄 `parseL2Message()` 함수를 거친다. 즉, 트랜잭션의 유형에 따라 `switch-case` 문을 통해 Transaction 파싱이 적절하게 이루어져 반환된다.
+Arbitrum의 Transaction Type은 아래와 같이 기존 Geth에서 정의된 것들에 더해, Arbitrum Nitro에서 특별히 정의한 유형이 더 추가되었다. 당연한 얘기지만 각각의 Transaction Type마다 역할과 의미가 다르다. 그에 따라, 트랜잭션의 유형마다 `switch-case` 문을 통해 분기되어 적절한 과정을 거쳐 Transaction 파싱이 이루어져 반환된다. 특히, 우리가 다루는 L2 메세지의 파싱은 `ParseL2Transactions()` 함수의 8번째 줄 `parseL2Message()` 함수를 거친다.
 
 ```go
 // Transaction types.
