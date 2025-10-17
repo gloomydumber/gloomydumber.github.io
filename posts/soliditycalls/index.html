@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  
+  
+    
+  
+  <meta name="description" content="My blog site.">
+
+  <title>Breaking Down Solidity Calls: call, staticcall, delegatecall</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="https://gloomydumber.github.io/img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://gloomydumber.github.io/img/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://gloomydumber.github.io/img/apple-touch-icon.png">
+  
+  <style>
+
+  /* light mode colors */
+  body {
+    --primary-color: #5871a2;
+    --primary-pale-color: #5871a233;
+    --primary-decoration-color: #5871a210;
+    --bg-color: #ffffff;
+    --text-color: #2f3030;
+    --text-pale-color: #767676;
+    --text-decoration-color: #a9a9a9;
+    --highlight-mark-color: #5f75b020;
+
+    --callout-note-color: #5871a2;
+    --callout-tip-color: #268556;
+    --callout-important-color: #885fc9;
+    --callout-warning-color: #ab6632;
+    --callout-caution-color: #c64e4e;
+  }
+
+  /* dark mode colors */
+  body.dark {
+    --primary-color: #6f8fd1;
+    --primary-pale-color: #6f8fd166;
+    --primary-decoration-color: #6f8fd112;
+    --bg-color: #1c1c1c;
+    --text-color: #c1c1c1;
+    --text-pale-color: #848484;
+    --text-decoration-color: #5f5f5f;
+    --highlight-mark-color: #8296cb3b;
+
+    --callout-note-color: #6f8fd1;
+    --callout-tip-color: #47976f;
+    --callout-important-color: #9776cd;
+    --callout-warning-color: #ad7a52;
+    --callout-caution-color: #d06161;
+  }
+
+  /* typography */
+  body {
+    --main-font: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --code-font: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    --homepage-max-width: 768px;
+    --main-max-width: 768px;
+    --avatar-size: 60px;
+    --font-size: 16px;
+    --line-height: 1.75;
+    --img-border-radius: 0px;
+    --detail-border-radius: 0px;
+    --dark-mode-img-brightness: 0.75;
+    --dark-mode-chart-brightness: 0.75;
+    --inline-code-border-radius: 2px;
+    --inline-code-bg-color: var(--primary-decoration-color);
+    --block-code-border-radius: 0px;
+    --block-code-border-color: var(--primary-color);
+    --detail-border-color: var(--primary-color);
+  }
+
+</style>
+
+  <link rel="stylesheet" href="https://gloomydumber.github.io/main.css">
+  
+
+<link id="hl" rel="stylesheet" type="text/css" href="/hl-light.css" />
+
+
+
+  
+</head>
+
+<body class="post">
+  
+  <script>
+    const theme = sessionStorage.getItem('theme');
+    const match = window.matchMedia("(prefers-color-scheme: dark)").matches
+    if ((theme && theme == 'dark') || (!theme && match)) {
+      document.body.classList.add('dark');
+      const hl = document.querySelector('link#hl');
+      if (hl) hl.href = 'https://gloomydumber.github.io/hl-dark.css';
+    }
+  </script>
+  
+  
+<div id="wrapper">
+  <div id="blank"></div>
+  <aside>
+    
+    
+    <nav>
+      <ul>
+        
+        <li>
+          <a class="h2" href="#solidity-calls">Solidity Calls</a>
+          
+        </li>
+        
+        <li>
+          <a class="h2" href="#high-level-call-vs-low-level-call">High-Level Call vs. Low-Level Call</a>
+          
+        </li>
+        
+        <li>
+          <a class="h2" href="#call-staticcall-delegatecall">call, staticcall, delegatecall</a>
+          
+          <ul>
+            
+            <li>
+              <a class="h3" href="#call">call</a>
+            </li>
+            
+            <li>
+              <a class="h3" href="#staticcall">staticcall</a>
+            </li>
+            
+            <li>
+              <a class="h3" href="#delegatecall">delegatecall</a>
+            </li>
+            
+          </ul>
+          
+        </li>
+        
+      </ul>
+    </nav>
+    
+    
+    <button id="back-to-top" aria-label="back to top">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-up"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+
+    </button>
+    
+  </aside>
+  <main>
+    
+<header>
+  <nav>
+    <a id="back-link" href="https:&#x2F;&#x2F;gloomydumber.github.io&#x2F;posts">← Back</a>
+  </nav>
+</header>
+
+
+    <div>
+      
+      
+      
+      
+      <div id="copy-cfg" style="display: none;" data-copy-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
+" data-check-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
+"></div>
+      
+      <article class="prose">
+        <h1>Breaking Down Solidity Calls: call, staticcall, delegatecall</h1>
+        <div id="post-info">
+          <div id="date">
+            <span id="publish">Jun 25, 2022</span>
+            </div>
+
+          
+        </div>
+
+        
+        
+
+        
+
+        <p><em>Upgradable Contract</em> 에 대한 학습 과정에서, 이를 온전히 이해하기 위해서는 Solidity의 함수 호출에 관해서 선행적으로 정리할 필요가 있다고 판단했다. 따라서 본 글에서는 Solidity의 함수 호출 메소드 중 <code>call</code>, <code>staticcall</code>, <code>delegatecall</code> 을 다루고, 아울러 High-Level Call 과 Low-Level Call 의 비교도 함께 설명한다.</p>
+<h2 id="solidity-calls">Solidity Calls<a class="zola-anchor" href="#solidity-calls" aria-label="Anchor link for: solidity-calls" style="visibility: hidden;"></a>
+</h2>
+<p>우선 <code>call</code>, <code>staticcall</code>, <code>delegatecall</code> 모두 <code>address</code> 타입의 멤버 메소드이다. 아래와 같은 식으로 호출이 가능하다는 얘기이다.</p>
+<pre data-lang="solidity" class="language-solidity z-code"><code class="language-solidity" data-lang="solidity"><span class="z-source z-solidity"><span class="z-constant z-language">address</span><span class="z-punctuation z-definition z-start z-sol">(</span><span class="z-constant z-numeric">0xdAC17F958D2ee523a2206206994597C13D831ec7</span><span class="z-punctuation z-definition z-end z-sol">)</span>.call<span class="z-punctuation z-definition z-start z-sol">(</span>...<span class="z-punctuation z-definition z-end z-sol">)</span>;
+</span><span class="z-source z-solidity"><span class="z-constant z-language">address</span><span class="z-punctuation z-definition z-start z-sol">(</span><span class="z-constant z-numeric">0xdAC17F958D2ee523a2206206994597C13D831ec7</span><span class="z-punctuation z-definition z-end z-sol">)</span>.staticcall<span class="z-punctuation z-definition z-start z-sol">(</span>...<span class="z-punctuation z-definition z-end z-sol">)</span>;
+</span><span class="z-source z-solidity"><span class="z-constant z-language">address</span><span class="z-punctuation z-definition z-start z-sol">(</span><span class="z-constant z-numeric">0xdAC17F958D2ee523a2206206994597C13D831ec7</span><span class="z-punctuation z-definition z-end z-sol">)</span>.delegatecall<span class="z-punctuation z-definition z-start z-sol">(</span>...<span class="z-punctuation z-definition z-end z-sol">)</span>;
+</span></code></pre>
+<p><a rel="noopener nofollow noreferrer" target="_blank" href="https://docs.soliditylang.org/en/v0.8.30/units-and-global-variables.html#members-of-address-types">Solidity Docs | Members of Address Types</a>에서 <code>balance</code>, <code>transfer</code>, <code>send</code> 등 <code>address</code> 타입의 모든 멤버에 대한 정의와 동작을 확인해 볼 수 있다.</p>
+<p><a rel="noopener nofollow noreferrer" target="_blank" href="https://docs.soliditylang.org/en/v0.8.30/types.html#members-of-addresses">Solidity Docs | Members of Addresses</a>에서는 <code>call</code>, <code>staticcall</code>, <code>delegatecall</code> 에 대해 다음과 같이 언급하고 있다.</p>
+<blockquote>
+<p>In order to interface with contracts that do not adhere to the ABI, or to get more direct control over the encoding, the functions <code>call</code>, <code>delegatecall</code> and <code>staticcall</code> are provided. They all take a single <code>bytes memory</code> parameter and return the success condition (as a <code>bool</code>) and the returned data (<code>bytes memory</code>). The functions <code>abi.encode</code>, <code>abi.encodePacked</code>, <code>abi.encodeWithSelector</code> and <code>abi.encodeWithSignature</code> can be used to encode structured data.</p>
+</blockquote>
+<p>이에 따르면, <code>call</code>, <code>staticcall</code>, <code>delegatecall</code> 은 컨트랙트를 ABI(Application Binary Interface)에 관계없이 직접적으로 제어하고자 할 때 사용하는 함수(메소드)들이다. 여기서 <strong>contracts that do not adhere to the ABI</strong> 라는 표현의 뉘앙스가 조금 이해하기 어렵다. 직역했을 때 <strong>ABI를 따르지 않는</strong> 혹은 <strong>ABI를 고수하지 않는</strong> 컨트랙트란, <strong>ABI를 통한 호출이 불가능한 컨트랙트</strong> 라는 뜻이다. 일반적으로 컨트랙트를 Solidity나 Vypher를 통해 작성하고 컴파일하는 경우에 자연스레 ABI가 함께 생성되며, 컨트랙트를 직접 raw-level의 바이트코드로 작성하는 경우 등 아주 특이한 경우에만 ABI를 통한 컨트랙트 호출이 불가능하다. (혹자는 바이트코드로 컨트랙트를 작성하는게 특이하지 않다고 할 수도 있다)</p>
+<details >
+  <summary><span>일반적인 상황이 아니라서, 크게 고려하지 않아도 되지만 다음과 같은 컨트랙트 코드가 ABI를 통한 호출이 불가능한 컨트랙트의 예이다.</span></summary>
+  <p>아래 컨트랙트는 동작이 별도의 함수로 정의되어 있지않고 <code>fallback()</code>으로만 구성되어, ABI를 통한 호출이 불가능하다.</p>
+<pre data-lang="solidity" class="language-solidity z-code"><code class="language-solidity" data-lang="solidity"><span class="z-source z-solidity"><span class="z-comment z-line z-double-slash"><span class="z-punctuation z-definition z-comment">//</span> SPDX-License-Identifier: MIT
+</span></span><span class="z-source z-solidity"><span class="z-keyword z-sol">pragma</span> <span class="z-keyword z-sol">solidity</span> <span class="z-keyword z-sol">^</span><span class="z-constant z-numeric z-integer z-sol">0</span><span class="z-constant z-numeric z-integer z-sol">.8.0</span>;
+</span><span class="z-source z-solidity">
+</span><span class="z-source z-solidity"><span class="z-keyword z-declaration z-class">contract</span> <span class="z-support z-function">NonABIContract</span> <span class="z-punctuation z-section z-block z-begin z-sol">{</span>
+</span><span class="z-source z-solidity">    <span class="z-constant z-language">uint256</span> <span class="z-storage z-modifier">public</span> storedNumber;
+</span><span class="z-source z-solidity">    <span class="z-constant z-language">address</span> <span class="z-storage z-modifier">public</span> storedAddress;
+</span><span class="z-source z-solidity">
+</span><span class="z-source z-solidity">    <span class="z-comment z-line z-double-slash"><span class="z-punctuation z-definition z-comment">//</span> No function selector, just raw data parsing
+</span></span><span class="z-source z-solidity">    <span class="z-keyword z-declaration z-function">fallback</span><span class="z-punctuation z-section z-block z-begin z-sol">(</span><span class="z-punctuation z-section z-block z-end z-sol">)</span> <span class="z-storage z-modifier">external</span> <span class="z-storage z-modifier">payable</span> <span class="z-punctuation z-section z-block z-begin z-sol">{</span>
+</span><span class="z-source z-solidity">        <span class="z-comment z-line z-double-slash"><span class="z-punctuation z-definition z-comment">//</span> Expect calldata layout:
+</span></span><span class="z-source z-solidity">        <span class="z-comment z-line z-double-slash"><span class="z-punctuation z-definition z-comment">//</span> [0..31]   = uint256 number
+</span></span><span class="z-source z-solidity">        <span class="z-comment z-line z-double-slash"><span class="z-punctuation z-definition z-comment">//</span> [32..51]  = address (left-padded to 32 bytes)
+</span></span><span class="z-source z-solidity">
+</span><span class="z-source z-solidity">        <span class="z-keyword"><span class="z-punctuation z-section z-block z-begin z-sol">require</span></span>(<span class="z-storage z-type">msg</span>.<span class="z-storage z-type">data</span>.<span class="z-storage z-type">length</span> <span class="z-keyword z-operator z-logical">&gt;=</span> <span class="z-constant z-numeric">52</span>, <span class="z-string z-quoted">&quot;</span><span class="z-string z-quoted">I</span><span class="z-string z-quoted">n</span><span class="z-string z-quoted">v</span><span class="z-string z-quoted">a</span><span class="z-string z-quoted">l</span><span class="z-string z-quoted">i</span><span class="z-string z-quoted">d</span> <span class="z-string z-quoted">c</span><span class="z-string z-quoted">a</span><span class="z-string z-quoted">l</span><span class="z-string z-quoted">l</span><span class="z-string z-quoted">d</span><span class="z-string z-quoted">a</span><span class="z-string z-quoted">t</span><span class="z-string z-quoted">a</span><span class="z-string z-quoted">&quot;</span><span class="z-punctuation z-section z-block z-end z-sol">)</span>;
+</span><span class="z-source z-solidity">
+</span><span class="z-source z-solidity">        <span class="z-constant z-language">uint256</span> number;
+</span><span class="z-source z-solidity">        <span class="z-constant z-language">address</span> addr;
+</span><span class="z-source z-solidity">
+</span><span class="z-source z-solidity">        <span class="z-comment z-line z-double-slash"><span class="z-punctuation z-definition z-comment">//</span> Load the first 32 bytes as uint256
+</span></span><span class="z-source z-solidity">        <span class="z-keyword">assembly</span> <span class="z-punctuation z-section z-block z-begin z-sol">{</span>
+</span><span class="z-source z-solidity">            <span class="z-support z-function">number</span> <span class="z-keyword">:=</span> <span class="z-support z-function">calldataload</span>(0)
+</span><span class="z-source z-solidity">        <span class="z-punctuation z-section z-block z-end">}</span>
+</span><span class="z-source z-solidity">
+</span><span class="z-source z-solidity">        <span class="z-comment z-line z-double-slash"><span class="z-punctuation z-definition z-comment">//</span> Load the next 32 bytes, but only the last 20 are used for address
+</span></span><span class="z-source z-solidity">        bytes32 rawAddr;
+</span><span class="z-source z-solidity">        assembly {
+</span><span class="z-source z-solidity">            rawAddr := calldataload(32)
+</span><span class="z-source z-solidity">        <span class="z-punctuation z-section z-block z-end">}</span>
+</span><span class="z-source z-solidity">        addr <span class="z-keyword z-operator z-assignment">=</span> <span class="z-constant z-language">address</span><span class="z-punctuation z-section z-block z-begin z-sol">(</span><span class="z-constant z-language">uint160</span><span class="z-punctuation z-section z-block z-begin z-sol">(</span><span class="z-constant z-language">uint256</span><span class="z-punctuation z-section z-block z-begin z-sol">(</span>rawAddr<span class="z-punctuation z-definition z-end z-sol">)</span><span class="z-punctuation z-definition z-end z-sol">)</span><span class="z-punctuation z-definition z-end z-sol">)</span>;
+</span><span class="z-source z-solidity">
+</span><span class="z-source z-solidity">        storedNumber <span class="z-keyword z-operator z-assignment">=</span> number;
+</span><span class="z-source z-solidity">        storedAddress <span class="z-keyword z-operator z-assignment">=</span> addr;
+</span><span class="z-source z-solidity">    <span class="z-punctuation z-section z-block z-end">}</span>
+</span><span class="z-source z-solidity"><span class="z-punctuation z-section z-block z-end">}</span>
+</span></code></pre>
+<p>위의 컨트랙트 로직은 <code>fallback()</code> 에서만 동작하므로 <code>interface</code> 키워드로 선언한 <code>INonABIContract</code> 에서 정의된 것이 없다. 결국 아래 코드 예제에서 <code>call</code> 을 이용해 접근하고 있다.</p>
+<pre data-lang="solidity" class="language-solidity z-code"><code class="language-solidity" data-lang="solidity"><span class="z-source z-solidity"><span class="z-comment z-line z-double-slash"><span class="z-punctuation z-definition z-comment">//</span> SPDX-License-Identifier: MIT
+</span></span><span class="z-source z-solidity"><span class="z-keyword z-sol">pragma</span> <span class="z-keyword z-sol">solidity</span> <span class="z-keyword z-sol">^</span><span class="z-constant z-numeric z-integer z-sol">0</span><span class="z-constant z-numeric z-integer z-sol">.8.0</span>;
+</span><span class="z-source z-solidity">
+</span><span class="z-source z-solidity"><span class="z-keyword z-declaration z-class">interface</span> <span class="z-support z-function">INonABIContract</span> <span class="z-punctuation z-section z-block z-begin z-sol">{</span>
+</span><span class="z-source z-solidity">    <span class="z-comment z-line z-double-slash"><span class="z-punctuation z-definition z-comment">//</span> No functions here, because the contract does not expose an ABI.
+</span></span><span class="z-source z-solidity">    <span class="z-comment z-line z-double-slash"><span class="z-punctuation z-definition z-comment">//</span> We&#39;ll just use raw call.
+</span></span><span class="z-source z-solidity"><span class="z-punctuation z-section z-block z-end">}</span>
+</span><span class="z-source z-solidity">
+</span><span class="z-source z-solidity"><span class="z-keyword z-declaration z-class">contract</span> <span class="z-support z-function">Caller</span> <span class="z-punctuation z-section z-block z-begin z-sol">{</span>
+</span><span class="z-source z-solidity">    <span class="z-keyword z-declaration z-function">function</span> <span class="z-entity z-name z-function">callNonABIContract</span><span class="z-punctuation z-section z-block z-begin z-sol">(</span>
+</span><span class="z-source z-solidity">        <span class="z-constant z-language">address</span> <span class="z-variable z-parameter">target</span>,
+</span><span class="z-source z-solidity">        <span class="z-constant z-language">uint256</span> <span class="z-variable z-parameter">number</span>,
+</span><span class="z-source z-solidity">        <span class="z-constant z-language">address</span> <span class="z-variable z-parameter">addr</span>
+</span><span class="z-source z-solidity">    <span class="z-punctuation z-section z-block z-end z-sol">)</span> <span class="z-storage z-modifier">external</span> <span class="z-keyword">returns</span> <span class="z-punctuation z-section z-block z-begin z-sol">(</span><span class="z-constant z-language">bool</span> success, <span class="z-constant z-language">bytes</span> memory returnData<span class="z-punctuation z-section z-block z-end z-sol">)</span> <span class="z-punctuation z-section z-block z-begin z-sol">{</span>
+</span><span class="z-source z-solidity">        <span class="z-comment z-line z-double-slash"><span class="z-punctuation z-definition z-comment">//</span> Manually encode the calldata:
+</span></span><span class="z-source z-solidity">        <span class="z-comment z-line z-double-slash"><span class="z-punctuation z-definition z-comment">//</span> [0..31] = uint256 number
+</span></span><span class="z-source z-solidity">        <span class="z-comment z-line z-double-slash"><span class="z-punctuation z-definition z-comment">//</span> [32..51] = address (20 bytes, left padded to 32)
+</span></span><span class="z-source z-solidity">        <span class="z-constant z-language">bytes</span> <span class="z-storage z-modifier">memory</span> payload <span class="z-keyword z-operator z-assignment">=</span> <span class="z-storage z-type">abi</span>.<span class="z-storage z-type">encodePacked</span>(number, addr<span class="z-punctuation z-section z-block z-end z-sol">)</span>;
+</span><span class="z-source z-solidity">
+</span><mark><span class="z-source z-solidity">        <span class="z-comment z-line z-double-slash"><span class="z-punctuation z-definition z-comment">//</span> Use low-level call
+</span></span></mark><mark><span class="z-source z-solidity">        <span class="z-punctuation z-definition z-start z-sol">(</span>success, returnData<span class="z-punctuation z-definition z-end z-sol">)</span> <span class="z-keyword z-operator z-assignment">=</span> target.<span class="z-storage z-type">call</span>(payload<span class="z-punctuation z-section z-block z-end z-sol">)</span>;
+</span></mark><span class="z-source z-solidity">
+</span><span class="z-source z-solidity">        <span class="z-keyword"><span class="z-punctuation z-section z-block z-begin z-sol">require</span></span>(success, <span class="z-string z-quoted">&quot;</span><span class="z-string z-quoted">L</span><span class="z-string z-quoted">o</span><span class="z-string z-quoted">w</span><span class="z-string z-quoted">-</span><span class="z-string z-quoted">l</span><span class="z-string z-quoted">e</span><span class="z-string z-quoted">v</span><span class="z-string z-quoted">e</span><span class="z-string z-quoted">l</span> <span class="z-string z-quoted">c</span><span class="z-string z-quoted">a</span><span class="z-string z-quoted">l</span><span class="z-string z-quoted">l</span> <span class="z-string z-quoted">f</span><span class="z-string z-quoted">a</span><span class="z-string z-quoted">i</span><span class="z-string z-quoted">l</span><span class="z-string z-quoted">e</span><span class="z-string z-quoted">d</span><span class="z-string z-quoted">&quot;</span><span class="z-punctuation z-section z-block z-end z-sol">)</span>;
+</span><span class="z-source z-solidity">    <span class="z-punctuation z-section z-block z-end">}</span>
+</span><span class="z-source z-solidity"><span class="z-punctuation z-section z-block z-end">}</span>
+</span></code></pre>
+<p>이렇듯, 아주 특수한 경우에만 컨트랙트가 ABI를 통해 호출이 불가능하다.</p>
+
+</details>
+<p>정리하자면, <strong><code>call</code>, <code>staticcall</code>, <code>delegatecall</code> 은 ABI를 통한 호출이 불가하거나, 인코딩을 통해 보다 직접적인 제어가 필요한 컨트랙트를 호출하기 위해 사용하는 함수다.</strong></p>
+<p>또, <code>call</code>, <code>staticcall</code>, <code>delegatecall</code> 모두 파라미터로는 <code>bytes memory</code> 타입의 하나의 값을 취하고,</p>
+<p>반환값으로는 성공 여부(<code>bool</code>)와 반환 데이터(<code>bytes memory</code>) 두 값을 반환한다.</p>
+<p>이를 코드 예제로 확인해보면,</p>
+<pre data-lang="solidity" class="language-solidity z-code"><code class="language-solidity" data-lang="solidity"><span class="z-source z-solidity"><span class="z-constant z-language">bytes</span> <span class="z-storage z-modifier">memory</span> payload <span class="z-keyword z-operator z-assignment">=</span> <span class="z-storage z-type">abi</span>.<span class="z-storage z-type">encodeWithSignature</span>(<span class="z-string z-quoted">&quot;</span><span class="z-string z-quoted">r</span><span class="z-string z-quoted">e</span><span class="z-string z-quoted">g</span><span class="z-string z-quoted">i</span><span class="z-string z-quoted">s</span><span class="z-string z-quoted">t</span><span class="z-string z-quoted">e</span><span class="z-string z-quoted">r</span><span class="z-string z-quoted">(</span><span class="z-string z-quoted">s</span><span class="z-string z-quoted">t</span><span class="z-string z-quoted">r</span><span class="z-string z-quoted">i</span><span class="z-string z-quoted">n</span><span class="z-string z-quoted">g</span><span class="z-string z-quoted">)</span><span class="z-string z-quoted">&quot;</span>, <span class="z-string z-quoted">&quot;</span><span class="z-string z-quoted">M</span><span class="z-string z-quoted">y</span><span class="z-string z-quoted">N</span><span class="z-string z-quoted">a</span><span class="z-string z-quoted">m</span><span class="z-string z-quoted">e</span><span class="z-string z-quoted">&quot;</span><span class="z-punctuation z-section z-block z-end z-sol">)</span>;
+</span><mark><span class="z-source z-solidity"><span class="z-punctuation z-definition z-start z-sol">(</span><span class="z-constant z-language">bool</span> success, <span class="z-constant z-language">bytes</span> <span class="z-storage z-modifier">memory</span> returnData<span class="z-punctuation z-definition z-end z-sol">)</span> <span class="z-keyword z-operator z-assignment">=</span> <span class="z-constant z-language">address</span><span class="z-punctuation z-section z-block z-begin z-sol">(</span>nameReg<span class="z-punctuation z-definition z-end z-sol">)</span>.<span class="z-storage z-type">call</span>(payload<span class="z-punctuation z-section z-block z-end z-sol">)</span>;
+</span></mark><span class="z-source z-solidity">require<span class="z-punctuation z-definition z-start z-sol">(</span>success<span class="z-punctuation z-definition z-end z-sol">)</span>;
+</span></code></pre>
+<p>2번째 줄의 <code>call</code> 내부에 <code>bytes memory</code> 타입의 <code>payload</code> 변수 하나가 파라미터로 전달되었고,</p>
+<p>2번째 줄의 <code>(bool success, bytes memory returnData)</code> 로 <code>()</code> 를 통해 반환값으로 두 변수가 각각 <code>bool</code>과 <code>bytes memory</code> 타입으로 반환되는 것을 확인할 수 있다.</p>
+<p>이에 더해, 문서에서 해당 내용 바로 아래에 다음과 같은 경고 Callout을 두었는데,</p>
+
+<blockquote class="callout caution has-title">
+  
+  
+  <p class="title">
+    <span class="icon">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path d="M4.00098 20V14C4.00098 9.58172 7.5827 6 12.001 6C16.4193 6 20.001 9.58172 20.001 14V20H21.001V22H3.00098V20H4.00098ZM6.00098 20H18.001V14C18.001 10.6863 15.3147 8 12.001 8C8.68727 8 6.00098 10.6863 6.00098 14V20ZM11.001 2H13.001V5H11.001V2ZM19.7792 4.80761L21.1934 6.22183L19.0721 8.34315L17.6578 6.92893L19.7792 4.80761ZM2.80859 6.22183L4.22281 4.80761L6.34413 6.92893L4.92991 8.34315L2.80859 6.22183ZM7.00098 14C7.00098 11.2386 9.23956 9 12.001 9V11C10.3441 11 9.00098 12.3431 9.00098 14H7.00098Z" fill="currentColor"></path></svg>
+
+    </span>
+    <strong>Warning</strong>
+  </p>
+  <div class="content">
+    <p>All these functions are low-level functions and should be used with care. Specifically, any unknown contract might be malicious and if you call it, you hand over control to that contract which could in turn call back into your contract, so be prepared for changes to your state variables when the call returns. The regular way to interact with other contracts is to call a function on a contract object (<code>x.f()</code>).</p>
+
+  </div>
+  
+</blockquote>
+
+<p>즉, <code>call</code>, <code>staticcall</code>, <code>delegatecall</code> 모두 공통적으로 <strong>low-level function</strong> 이므로 조심해서 사용해야한다고 언급하고 있다. 특히, 알려지지 않은 컨트랙트를 호출 할 때에는 제어권을 해당 컨트랙트에 넘겨주기 때문에 주의해야한다고 언급한다. 따라서 다른 컨트랙트의 함수를 호출할 때에는 일반적으로 <code>x.f()</code> 와 같은 방법으로 컨트랙트 객체를 이용하여 접근하는 방식을 택하는 것을 권장하고 있다.</p>
+<p>이로써 <code>call</code>, <code>staticcall</code>, <code>delegatecall</code>의 공통점을 요약하면,</p>
+<ul>
+<li><code>address</code> 타입의 멤버 메소드이다.</li>
+<li>ABI를 통해 호출이 불가능하거나, 인코딩을 통해 보다 직접적인 제어가 필요한 컨트랙트를 호출하기 위해 사용하는 메소드이다.</li>
+<li>실행 시, <code>bytes memory</code> 타입의 변수 하나를 파라미터로 취하고, 실행 결과 반환값으로는 <code>bool</code>, <code>bytes memory</code> 변수 2개를 반환받는다.</li>
+<li><strong>low-level function</strong> 이므로 보안을 고려해서 사용해야한다.</li>
+</ul>
+<p>이쯤에서 <strong>low-level function</strong> 이라는 용어에 대해서 더 알아보려고 한다.</p>
+<h2 id="high-level-call-vs-low-level-call">High-Level Call vs. Low-Level Call<a class="zola-anchor" href="#high-level-call-vs-low-level-call" aria-label="Anchor link for: high-level-call-vs-low-level-call" style="visibility: hidden;"></a>
+</h2>
+<p>컨트랙트의 함수 인터페이스를 알면 <code>call</code>, <code>staticcall</code>, <code>delegatecall</code> 을 사용할 필요없이 아래와 같이 호출 할 수 있다.</p>
+<pre data-lang="solidity" class="language-solidity z-code"><code class="language-solidity" data-lang="solidity"><span class="z-source z-solidity"><span class="z-comment z-line z-double-slash"><span class="z-punctuation z-definition z-comment">//</span> SPDX-License-Identifier: MIT
+</span></span><span class="z-source z-solidity"><span class="z-keyword z-sol">pragma</span> <span class="z-keyword z-sol">solidity</span> <span class="z-keyword z-sol">^</span><span class="z-constant z-numeric z-integer z-sol">0</span><span class="z-constant z-numeric z-integer z-sol">.8.0</span>;
+</span><span class="z-source z-solidity">
+</span><span class="z-source z-solidity"><span class="z-keyword z-declaration z-class">contract</span> <span class="z-support z-function">CalledContract</span> <span class="z-punctuation z-section z-block z-begin z-sol">{</span>
+</span><span class="z-source z-solidity">    <span class="z-constant z-language">uint256</span> <span class="z-storage z-modifier">public</span> number;
+</span><span class="z-source z-solidity">
+</span><span class="z-source z-solidity">    <span class="z-keyword z-declaration z-function">function</span> <span class="z-entity z-name z-function">setNumber</span><span class="z-punctuation z-section z-block z-begin z-sol">(</span><span class="z-constant z-language">uint256</span> <span class="z-variable z-parameter">_num</span><span class="z-punctuation z-section z-block z-end z-sol">)</span> <span class="z-storage z-modifier">external</span> <span class="z-punctuation z-section z-block z-begin z-sol">{</span>
+</span><span class="z-source z-solidity">        number <span class="z-keyword z-operator z-assignment">=</span> _num;
+</span><span class="z-source z-solidity">    <span class="z-punctuation z-section z-block z-end">}</span>
+</span><span class="z-source z-solidity"><span class="z-punctuation z-section z-block z-end">}</span>
+</span><span class="z-source z-solidity">
+</span><span class="z-source z-solidity"><span class="z-keyword z-declaration z-class">interface</span> <span class="z-support z-function">ICalledContract</span> <span class="z-punctuation z-section z-block z-begin z-sol">{</span>
+</span><span class="z-source z-solidity">    <span class="z-keyword z-declaration z-function">function</span> <span class="z-entity z-name z-function">setNumber</span><span class="z-punctuation z-section z-block z-begin z-sol">(</span><span class="z-constant z-language">uint256</span> <span class="z-variable z-parameter">_num</span><span class="z-punctuation z-section z-block z-end z-sol">)</span> <span class="z-storage z-modifier">external</span>;
+</span><span class="z-source z-solidity"><span class="z-punctuation z-section z-block z-end">}</span>
+</span><span class="z-source z-solidity">
+</span><span class="z-source z-solidity"><span class="z-keyword z-declaration z-class">contract</span> <span class="z-support z-function">CallerContract</span> <span class="z-punctuation z-section z-block z-begin z-sol">{</span>
+</span><span class="z-source z-solidity">    <span class="z-keyword z-declaration z-function">function</span> <span class="z-entity z-name z-function">callSetNumber</span><span class="z-punctuation z-section z-block z-begin z-sol">(</span><span class="z-constant z-language">address</span> <span class="z-variable z-parameter">_callee</span>, <span class="z-constant z-language">uint256</span> <span class="z-variable z-parameter">_num</span><span class="z-punctuation z-section z-block z-end z-sol">)</span> <span class="z-storage z-modifier">external</span> <span class="z-punctuation z-section z-block z-begin z-sol">{</span>
+</span><mark><span class="z-source z-solidity">        <span class="z-support z-function">ICalledContract</span><span class="z-punctuation z-section z-block z-begin z-sol">(</span>_callee<span class="z-punctuation z-section z-block z-end z-sol">)</span>.<span class="z-support z-function">setNumber</span><span class="z-punctuation z-section z-block z-begin z-sol">(</span>_num<span class="z-punctuation z-section z-block z-end z-sol">)</span>;
+</span></mark><span class="z-source z-solidity">    <span class="z-punctuation z-section z-block z-end">}</span>
+</span><span class="z-source z-solidity"><span class="z-punctuation z-section z-block z-end">}</span>
+</span></code></pre>
+<p><code>CalledContract</code> 의 인터페이스가 <code>ICalledContract</code> 로 <code>interface</code> 키워드를 통해 <code>setNumber</code> 함수와 함께 정의되어 있으므로, <code>CallerContract</code> 에서 <code>.setNumber()</code> 와 같이 멤버 메소드를 호출하는 것과 같은 형태로 호출이 가능하다. 이러한 방식의 호출을 <strong>High-Level Call</strong> 이라고 한다.</p>
+<p>High-Level Call 은 아래와 같은 동작을 한다.</p>
+<ul>
+<li>함수 이름과 파라미터를 인터페이스로 정의하고 호출하면 컴파일러가 함수 이름과 파라미터를 ABI에 맞게 알아서 인코딩해준다.</li>
+<li>실패 시에는 트랜잭션 자체가 <code>revert</code> 된다.</li>
+</ul>
+<p>반면에 아래와 같이 <code>call</code> 을 활용해서 호출하는 경우를 살펴보자.</p>
+<pre data-lang="solidity" class="language-solidity z-code"><code class="language-solidity" data-lang="solidity"><span class="z-source z-solidity"><span class="z-comment z-line z-double-slash"><span class="z-punctuation z-definition z-comment">//</span> SPDX-License-Identifier: MIT
+</span></span><span class="z-source z-solidity"><span class="z-keyword z-sol">pragma</span> <span class="z-keyword z-sol">solidity</span> <span class="z-keyword z-sol">^</span><span class="z-constant z-numeric z-integer z-sol">0</span><span class="z-constant z-numeric z-integer z-sol">.8.0</span>;
+</span><span class="z-source z-solidity">
+</span><span class="z-source z-solidity"><span class="z-keyword z-declaration z-class">contract</span> <span class="z-support z-function">CalledContract</span> <span class="z-punctuation z-section z-block z-begin z-sol">{</span>
+</span><span class="z-source z-solidity">    <span class="z-constant z-language">uint256</span> <span class="z-storage z-modifier">public</span> number;
+</span><span class="z-source z-solidity">
+</span><span class="z-source z-solidity">    <span class="z-keyword z-declaration z-function">function</span> <span class="z-entity z-name z-function">setNumber</span><span class="z-punctuation z-section z-block z-begin z-sol">(</span><span class="z-constant z-language">uint256</span> <span class="z-variable z-parameter">_num</span><span class="z-punctuation z-section z-block z-end z-sol">)</span> <span class="z-storage z-modifier">external</span> <span class="z-punctuation z-section z-block z-begin z-sol">{</span>
+</span><span class="z-source z-solidity">        number <span class="z-keyword z-operator z-assignment">=</span> _num;
+</span><span class="z-source z-solidity">    <span class="z-punctuation z-section z-block z-end">}</span>
+</span><span class="z-source z-solidity"><span class="z-punctuation z-section z-block z-end">}</span>
+</span><span class="z-source z-solidity">
+</span><span class="z-source z-solidity"><span class="z-keyword z-declaration z-class">contract</span> <span class="z-support z-function">CallerContract</span> <span class="z-punctuation z-section z-block z-begin z-sol">{</span>
+</span><span class="z-source z-solidity">    <span class="z-keyword z-declaration z-function">function</span> <span class="z-entity z-name z-function">callSetNumber</span><span class="z-punctuation z-section z-block z-begin z-sol">(</span><span class="z-constant z-language">address</span> <span class="z-variable z-parameter">_callee</span>, <span class="z-constant z-language">uint256</span> <span class="z-variable z-parameter">_num</span><span class="z-punctuation z-section z-block z-end z-sol">)</span> <span class="z-storage z-modifier">external</span> <span class="z-keyword">returns</span> <span class="z-punctuation z-section z-block z-begin z-sol">(</span><span class="z-constant z-language">bool</span>, <span class="z-constant z-language">bytes</span> memory<span class="z-punctuation z-section z-block z-end z-sol">)</span> <span class="z-punctuation z-section z-block z-begin z-sol">{</span>
+</span><mark><span class="z-source z-solidity">        <span class="z-comment z-line z-double-slash"><span class="z-punctuation z-definition z-comment">//</span> encode function selector + arguments
+</span></span></mark><mark><span class="z-source z-solidity">        <span class="z-punctuation z-definition z-start z-sol">(</span><span class="z-constant z-language">bool</span> success, <span class="z-constant z-language">bytes</span> <span class="z-storage z-modifier">memory</span> data<span class="z-punctuation z-definition z-end z-sol">)</span> <span class="z-keyword z-operator z-assignment">=</span> _callee.<span class="z-storage z-type">call</span>(
+</span></mark><mark><span class="z-source z-solidity">            <span class="z-storage z-type">abi</span>.<span class="z-storage z-type">encodeWithSignature</span>(<span class="z-string z-quoted">&quot;</span><span class="z-string z-quoted">s</span><span class="z-string z-quoted">e</span><span class="z-string z-quoted">t</span><span class="z-string z-quoted">N</span><span class="z-string z-quoted">u</span><span class="z-string z-quoted">m</span><span class="z-string z-quoted">b</span><span class="z-string z-quoted">e</span><span class="z-string z-quoted">r</span><span class="z-string z-quoted">(</span><span class="z-string z-quoted">u</span><span class="z-string z-quoted">i</span><span class="z-string z-quoted">n</span><span class="z-string z-quoted">t</span><span class="z-string z-quoted">2</span><span class="z-string z-quoted">5</span><span class="z-string z-quoted">6</span><span class="z-string z-quoted">)</span><span class="z-string z-quoted">&quot;</span>, _num<span class="z-punctuation z-section z-block z-end z-sol">)</span>
+</span></mark><mark><span class="z-source z-solidity">        <span class="z-punctuation z-section z-block z-end z-sol">)</span>;
+</span></mark><span class="z-source z-solidity">        <span class="z-keyword">return</span> <span class="z-punctuation z-definition z-start z-sol">(</span>success, data<span class="z-punctuation z-definition z-end z-sol">)</span>;
+</span><span class="z-source z-solidity">    <span class="z-punctuation z-section z-block z-end">}</span>
+</span><span class="z-source z-solidity"><span class="z-punctuation z-section z-block z-end">}</span>
+</span></code></pre>
+<p>이 경우, <code>interface</code> 키워드를 통해 작성해 둔 인터페이스가 없으므로, 개발자가 직접 <code>abi.encodeWithSignature</code> 코드를 통해 함수 이름과 파라미터를 인코딩하고 있다.</p>
+<p>이렇게 인코딩된 값을 <code>call</code> 을 이용하여 <strong>직접</strong> 호출하는 것을 <strong>Low-level Call</strong>이라 한다.</p>
+<p><code>call</code>, <code>staticall</code>, <code>delegatecall</code> 과 같은 Low-Level Call 은 아래와 같은 동작을 한다.</p>
+<ul>
+<li>개발자가 직접 함수 시그니처와 파라미터를 <code>abi.encode</code>와 같은 메소드를 통해 인코딩해서 <code>bytes memory</code>로 넘겨줘야 한다.</li>
+<li>실패시 트랜잭션 자체가 <code>revert</code> 되지 않고, 성공/실패 여부도 <code>bool</code> 타입으로 개발자가 직접 예외 처리해야 한다. (Silently Fail 될 수 있음을 고려해야 한다)</li>
+</ul>
+<h2 id="call-staticcall-delegatecall"><code>call</code>, <code>staticcall</code>, <code>delegatecall</code><a class="zola-anchor" href="#call-staticcall-delegatecall" aria-label="Anchor link for: call-staticcall-delegatecall" style="visibility: hidden;"></a>
+</h2>
+<p>다시 한번 더 정리하면 Low-level Call에 해당하는 세가지 메소드의 공통된 특징은 아래와 같다.</p>
+<ul>
+<li><code>address</code> 타입의 멤버 메소드이다.</li>
+<li>ABI를 통해 호출이 불가능하거나, 인코딩을 통해 보다 직접적인 제어가 필요한 컨트랙트를 호출하기 위해 사용하는 메소드이다.</li>
+<li>실행 시, <code>bytes memory</code> 타입의 변수 하나를 파라미터로 취하고, 실행 결과 반환값으로는 <code>bool</code>, <code>bytes memory</code> 변수 2개를 반환받는다.</li>
+<li><strong>low-level function</strong> 이므로 보안을 고려해서 사용해야한다.</li>
+<li>개발자가 직접 함수 시그니처와 파라미터를 <code>abi.encode</code>와 같은 메소드를 통해 인코딩해서 <code>bytes memory</code>로 넘겨줘야 한다.</li>
+<li>실패시 트랜잭션 자체가 <code>revert</code> 되지 않고, 성공/실패 여부도 <code>bool</code> 타입으로 개발자가 직접 예외 처리해야 한다. (Silently Fail 될 수 있음을 고려해야 한다)</li>
+</ul>
+<p>아래에서는 Low-level Call에 해당하는 세가지 메소드 각각의 특징에 대해서 간략하게 서술한다.</p>
+<h3 id="call"><code>call</code><a class="zola-anchor" href="#call" aria-label="Anchor link for: call" style="visibility: hidden;"></a>
+</h3>
+<ul>
+<li><code>address(...).call{value: 1 ether, gas: 10000}("");</code> 와 같이 <code>bytes memory</code> 파라미터를 비워두면 함수 호출이 아니라 이더 전송으로 쓸 수 있고, 보낼 이더 수량과 가스를 지정할 수 있다. (이는 이더 전송시 <code>send</code>와 달리 권장되는 방법이다)</li>
+<li>다른 컨트랙트의 함수 호출이 가능하다. (하지만 High-level Call을 권장한다)</li>
+<li>호출하는 컨트랙트(callee)에 상태 변경 로직이 있으면 callee의 상태가 변경된다.</li>
+</ul>
+<h3 id="staticcall"><code>staticcall</code><a class="zola-anchor" href="#staticcall" aria-label="Anchor link for: staticcall" style="visibility: hidden;"></a>
+</h3>
+<ul>
+<li>read-only 버전의 <code>call</code>로 이해할 수 있다.</li>
+<li>컨트랙트의 <code>view</code> 또는 <code>pure</code> modifier인 함수를 호출할 때 사용한다.</li>
+<li>상태변경이나 상태저장이 발생하면 <code>revert</code> 된다.</li>
+</ul>
+<h3 id="delegatecall"><code>delegatecall</code><a class="zola-anchor" href="#delegatecall" aria-label="Anchor link for: delegatecall" style="visibility: hidden;"></a>
+</h3>
+<ul>
+<li>다른 컨트랙트(callee)의 로직을 이용하되, 스토리지는 호출자(caller)의 것을 이용한다.</li>
+<li>Upgradable Contract를 구현할 때 이용한다.</li>
+<li>Storage Collision이 일어나지 않도록 주의해서 사용해야 한다.</li>
+</ul>
+<hr />
+<ul>
+<li><a rel="noopener nofollow noreferrer" target="_blank" href="https://docs.soliditylang.org/en/v0.8.30/units-and-global-variables.html#members-of-address-types">Solidity Docs | members of address types</a></li>
+<li><a rel="noopener nofollow noreferrer" target="_blank" href="https://rareskills.io/post/delegatecall">RareSkills | Delegatecall: The Detailed and Animated Guide</a></li>
+<li><a rel="noopener nofollow noreferrer" target="_blank" href="https://rareskills.io/post/low-level-call-solidity">RareSkills | Low Level Call vs High Level Call in Solidity</a></li>
+<li><a rel="noopener nofollow noreferrer" target="_blank" href="https://medium.com/coinmonks/call-staticcall-and-delegatecall-1f0e1853340">Coinmonks | Learn Solidity lesson 34. Call, staticcall and delegatecall</a></li>
+</ul>
+
+      </article>
+
+      
+      
+      <div class="reaction right" data-endpoint="https:&#x2F;&#x2F;example.com&#x2F;api&#x2F;reaction"></div>
+      
+
+      
+      
+      <div class="giscus"></div>
+      <script src="https://giscus.app/client.js"
+        data-repo="isunjn/serene-demo-site"
+        data-repo-id="R_kgDOGXmnuA"
+        data-category="giscus_comment"
+        data-category-id="DIC_kwDOGXmnuM4CWs0S"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="0"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="https://gloomydumber.github.io/giscus_light.css"
+        data-lang="en"
+        crossorigin="anonymous"
+        async>
+</script>
+      
+    </div>
+
+    
+
+
+<footer>
+  <div class="left">
+    <div class="copyright">
+      © 2025 gloomydumber
+      
+    </div>
+  </div>
+
+  <div class="right">
+    
+    
+      
+    
+    
+    <a id="rss-btn" href="https://gloomydumber.github.io/posts/feed.xml">RSS</a>
+    
+    
+
+    
+    
+    
+    <button id="theme-toggle" aria-label="theme switch">
+      <span class="moon-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path d="M10 7C10 10.866 13.134 14 17 14C18.9584 14 20.729 13.1957 21.9995 11.8995C22 11.933 22 11.9665 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C12.0335 2 12.067 2 12.1005 2.00049C10.8043 3.27098 10 5.04157 10 7ZM4 12C4 16.4183 7.58172 20 12 20C15.0583 20 17.7158 18.2839 19.062 15.7621C18.3945 15.9187 17.7035 16 17 16C12.0294 16 8 11.9706 8 7C8 6.29648 8.08133 5.60547 8.2379 4.938C5.71611 6.28423 4 8.9417 4 12Z" fill="currentColor"></path></svg>
+</span>
+      <span class="sun-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path d="M12 18C8.68629 18 6 15.3137 6 12C6 8.68629 8.68629 6 12 6C15.3137 6 18 8.68629 18 12C18 15.3137 15.3137 18 12 18ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16ZM11 1H13V4H11V1ZM11 20H13V23H11V20ZM3.51472 4.92893L4.92893 3.51472L7.05025 5.63604L5.63604 7.05025L3.51472 4.92893ZM16.9497 18.364L18.364 16.9497L20.4853 19.0711L19.0711 20.4853L16.9497 18.364ZM19.0711 3.51472L20.4853 4.92893L18.364 7.05025L16.9497 5.63604L19.0711 3.51472ZM5.63604 16.9497L7.05025 18.364L4.92893 20.4853L3.51472 19.0711L5.63604 16.9497ZM23 11V13H20V11H23ZM4 11V13H1V11H4Z" fill="currentColor"></path></svg>
+</span>
+    </button>
+    
+  </div>
+</footer>
+
+
+
+
+<dialog id="rss-mask">
+  <div>
+    <a href="https:&#x2F;&#x2F;gloomydumber.github.io&#x2F;posts&#x2F;feed.xml">https:&#x2F;&#x2F;gloomydumber.github.io&#x2F;posts&#x2F;feed.xml</a>
+    
+    
+    <button autofocus aria-label="copy" data-link="https:&#x2F;&#x2F;gloomydumber.github.io&#x2F;posts&#x2F;feed.xml" data-copy-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
+" data-check-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
+" >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z" fill="currentColor"></path></svg>
+
+    </button>
+  </div>
+</dialog>
+
+
+
+  </main>
+</div>
+
+  
+<script src="/js/lightense.min.js"></script>
+
+
+  <script src="https://gloomydumber.github.io/js/main.js"></script>
+</body>
+
+</html>
