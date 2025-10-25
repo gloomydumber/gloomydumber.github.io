@@ -80,7 +80,9 @@ ReadMe는 위 예제 컴포넌트 코드에서 확인할 수 있듯이 Tailwind 
 
 ## Docs as Code 경험기
 
-[Docs as Code](https://www.writethedocs.org/guide/docs-as-code/#docs-as-code)는 기술 문서를 소스 코드처럼 관리하는 철학으로, ReadMe에서는 Bidirectional Sync with Github 기능을 통해서 실현할 수 있게 되었다. Bidirectional Sync with Github 기능에 따른 Repository의 구조는 [ReadMe Docs | Documentation Structure](https://docs.readme.com/main/docs/documentation-structure)에 잘 명세되어있다.
+[Docs as Code](https://www.writethedocs.org/guide/docs-as-code/#docs-as-code)는 기술 문서를 소스 코드처럼 관리하는 철학으로, ReadMe에서는 Bidirectional Sync with Github 기능을 통해서 실현할 수 있게 되었다.
+
+Bidirectional Sync with Github 기능은 ReadMe에서 온라인 에디터로 작성하던 것을 Github Repository와 양방향 연동하여 코드 에디터에서도 작성하고 형상 관리할수록 있도록한 기능이다. 즉, 온라인 에디터로 작성한 것도 Commit 되어서 Github Repositroy에 반영되고, 그 반대로 코드 에디터나 다른 환경에서 작성한 변경 사항들도 Commit 하면 동일 Github Repository에 반영된다. 해당 기능과 동작은 [ReadMe Sync](https://github.com/apps/readme-sync) 라는 Github App을 통해 이루어진다. Bidirectional Sync with Github 기능에 따른 Repository의 구조는 [ReadMe Docs | Documentation Structure](https://docs.readme.com/main/docs/documentation-structure)에 잘 명세되어있다.
 
 매일 새로 공부한 것이 있으면 Github의 TIL(Today I Learned) Private Repository에 Markdown 형식으로 저장하는 버릇이 있는데, 그 버릇 덕분인지 VS Code와 같은 코드 편집기에서 문서를 작성하는 것이 굉장히 편하게 느껴졌다. 다만, 몇가지 주의할 점이 있다. ReadMe만의 주의점은 아니고, Markdown을 작성할 때 기본적으로 주의해야하는 문제인데, 공식 문서 [ReadMe Docs | Troubleshoot MDX Errors](https://docs.readme.com/main/docs/rendering-errors-invalid-mdx#closing-tags) 에서도 다루는 것과 같이 HTML 태그를 나타내는 '<'와 같은 몇몇 문자들을 '\\<' '\&lt;' 와 같은 식으로 잘 표기해야 할 때가 있다.
 
