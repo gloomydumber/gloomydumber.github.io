@@ -83,7 +83,7 @@ ReadMe는 위 예제 컴포넌트 코드에서 확인할 수 있듯이 Tailwind 
 
 [Docs as Code](https://www.writethedocs.org/guide/docs-as-code/#docs-as-code)는 기술 문서를 소스 코드처럼 관리하는 철학으로, ReadMe에서는 Bidirectional Sync with Github 기능을 통해서 실현할 수 있게 되었다.
 
-Bidirectional Sync with Github 기능은 ReadMe에서 온라인 에디터로 작성하던 것을 Github Repository와 양방향 연동하여 코드 에디터에서도 작성하고 형상 관리할수록 있도록한 기능이다. 즉, 온라인 에디터로 작성한 것도 Commit 되어서 Github Repositroy에 반영되고, 그 반대로 코드 에디터나 다른 환경에서 작성한 변경 사항들도 Commit 하면 동일 Github Repository에 반영되어 온라인 에디터에서 확인할 수 있다. 해당 기능과 동작은 [ReadMe Sync](https://github.com/apps/readme-sync) 라는 Github App을 통해 이루어진다.
+Bidirectional Sync with Github 기능은 ReadMe에서 온라인 에디터로 작성하던 것을 Github Repository와 양방향 연동하여 코드 에디터에서도 작성하고 형상 관리할수록 있도록한 기능이다. 즉, 온라인 에디터로 작성한 것도 Commit 되어서 Github Repository에 반영되고, 그 반대로 코드 에디터나 다른 환경에서 작성한 변경 사항들도 Commit 하면 동일 Github Repository에 반영되어 온라인 에디터에서 확인할 수 있다. 해당 기능과 동작은 [ReadMe Sync](https://github.com/apps/readme-sync) 라는 Github App을 통해 이루어진다.
 
 Bidirectional Sync with Github 기능에 따른 Repository의 구조는 [ReadMe Docs | Documentation Structure](https://docs.readme.com/main/docs/documentation-structure)에 잘 명세되어있다.
 
