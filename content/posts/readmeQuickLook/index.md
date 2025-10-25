@@ -82,9 +82,9 @@ ReadMe는 위 예제 컴포넌트 코드에서 확인할 수 있듯이 Tailwind 
 
 [Docs as Code](https://www.writethedocs.org/guide/docs-as-code/#docs-as-code)는 기술 문서를 소스 코드처럼 관리하는 철학으로, ReadMe에서는 Bidirectional Sync with Github 기능을 통해서 실현할 수 있게 되었다. Bidirectional Sync with Github 기능에 따른 Repository의 구조는 [ReadMe Docs | Documentation Structure](https://docs.readme.com/main/docs/documentation-structure)에 잘 명세되어있다.
 
-매일 새로 공부한 것이 있으면 Github의 TIL(Today I Learned) Private Repository에 Markdown 형식으로 저장하는 버릇이 있는데, 그 버릇 덕분인지 VS Code와 같은 코드 편집기에서 문서를 작성하는 것이 굉장히 편하게 느껴졌다. 다만, 몇가지 주의할 점이 있는데, 공식 문서 [ReadMe Docs | Troubleshoot MDX Errors](https://docs.readme.com/main/docs/rendering-errors-invalid-mdx#closing-tags) 에서 다루는 것과 같이 HTML 태그를 나타내는 '<'와 같은 몇몇 문자들을 '\\<' '\&lt;' 와 같은 식으로 잘 표기해야 할 때가 있다.
+매일 새로 공부한 것이 있으면 Github의 TIL(Today I Learned) Private Repository에 Markdown 형식으로 저장하는 버릇이 있는데, 그 버릇 덕분인지 VS Code와 같은 코드 편집기에서 문서를 작성하는 것이 굉장히 편하게 느껴졌다. 다만, 몇가지 주의할 점이 있다. ReadMe만의 주의점은 아니고, Markdown을 작성할 때 기본적으로 주의해야하는 문제인데, 공식 문서 [ReadMe Docs | Troubleshoot MDX Errors](https://docs.readme.com/main/docs/rendering-errors-invalid-mdx#closing-tags) 에서도 다루는 것과 같이 HTML 태그를 나타내는 '<'와 같은 몇몇 문자들을 '\\<' '\&lt;' 와 같은 식으로 잘 표기해야 할 때가 있다.
 
-다음으로는 사실 ReadMe의 문제라기보다는 Prettier의 문제인데, ReadMe에는 다음과 같은 [Tabbed Code Block](https://docs.readme.com/rdmd/docs/code-blocks#tabbed-code-blocks) 기능이 있다.
+마찬가지로 ReadMe의 문제라기보다는 Prettier의 문제도 있는데, ReadMe에는 다음과 같은 [Tabbed Code Block](https://docs.readme.com/rdmd/docs/code-blocks#tabbed-code-blocks) 기능이 있다.
 
 ```md
     ```javascript I'm A tab
@@ -111,11 +111,21 @@ ReadMe는 위 예제 컴포넌트 코드에서 확인할 수 있듯이 Tailwind 
     ```
 ```
 
-끝나는 \``` 와 시작하는 \```를 한 줄 띄워줘버린다. Prettier의 설정을 바꾸면 될일이지만, 그마저도 귀찮아서 코드 블록 탭이 있는 문서에 대해서만 Cmd(Ctrl) + Shift + P 를 눌러 커맨드 팔레트를 띄워서 Save without Formatting을 통해 저장하는 수고를 했다. 아무래도 문서 작성할 일이 늘면 이런저런 Syntax를 고려한 Prettier 설정을 해주긴 해야할 것 같다.
+끝나는 \``` 와 시작하는 \```를 한 줄 띄워줘버린다. 처음에는 해결법을 알아보기 귀찮아서 코드 블록 탭이 있는 문서에 대해서만 Cmd(Ctrl) + Shift + P 를 눌러 커맨드 팔레트를 띄워서 Save without Formatting을 통해 저장하는 수고를 했다. 알아보니 해당 동작을 막는 Prettier의 옵션 설정은 없는 것 같다. 후처리로직을 별도로 만들던지 Prettier를 대체하던지 해야할 것 같다. Docs as Code를 진행할 때 Code Formatter의 설정을 어떻게 할 것인지도 상당히 중요한 문제인 것을 깨달았다.
+
+문서를 업데이트하면서는 어떤 형태의 Commit Message Convention을 적용해야하는지도 고민이었다. 온라인 에디터에서 문서를 작성하거나 수정하여 저장하면 아래와 같은 형식으로 커밋 메시지가 기록된다. 커밋 메시지 형식을 커스텀할 수는 없는 것 같아서 코드 에디터로 문서를 작성하거나 수정하여 커밋할 때도 같은 형식으로 맞추는 것이 좋아보인다.
+
+- Create doc `signed-endpoint-examples-for-post-apiv3order-ed25519-keys`
+- Update reference `wallet-endpoints.json`
+- Delete reference `new-endpoint`
+- Move reference `get_new-endpoint` into `Wallet Endpoints`
+- Rename category `Market Data Endpoints` to `Wallet Endpoints`
 
 또 달리 고려할 점으로는, ReadMe 계정과 Github 계정이 연동되는 것이 아니라, ReadMe 계정과 Github Repository가 연동되는 개념이라 Git에서 변경사항 발생시 이메일 단위로 기록되어서 ReadMe 계정 이메일과 Github 계정 이메일을 일치시켜서 사용하는 것이 좋을 것 같다.
 
-브랜치 관리 기능은 Docs as Code의 핵심 부분에 해당하지만 브랜치 기능은 유료 버전에서 지원하기 때문에 직접 경험해보지는 못했다. 다만 공식 문서의 관련 명세를 보니 지원이 잘 되고 있는 것 같다. 실제 배포전에 `dev` 브랜치에 올려놓고 리뷰 받는 것 처럼 문서도 여러 작업자에 의해서 검토받을 수 있게 되어있다.
+브랜치 관리 기능은 Docs as Code 철학의 핵심 부분인 버전 관리 기능에 해당하지만 브랜치 기능은 유료 버전에서 지원하기 때문에 직접 경험해보지는 못했다. 다만 공식 문서의 관련 명세를 보니 지원이 잘 되고 있는 것 같다. 실제 배포전에 `dev` 브랜치에 올려놓고 리뷰 받는 것 처럼 문서도 여러 작업자에 의해서 검토받을 수 있게 되어있다.
+
+이러한 브랜치 관리 기능을 포함한 버전 관리를 통해서, 업데이트되는 프로덕트의 버전과 문서의 버전이 동기화될 수 있다. 이 부분도 직접 체험해보진 못했지만 상당히 강력하게 기능할 수 있을 것 같다. 실제로 여러 프로덕트들의 문서를 읽다가 실제 프로덕트와 문서의 명세가 잘 맞지 않는 경우가 많았는데 이를 상당히 해결해 줄 수 있는 철학이 Docs as Code임을 느꼈다.
 
 ## Online Editor 사용기
 
