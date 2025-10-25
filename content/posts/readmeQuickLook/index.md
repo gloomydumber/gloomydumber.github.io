@@ -165,7 +165,7 @@ Binance API를 명세한 OAS 파일은 해당 Repository에서 `spot_api.yaml` �
 
 글의 제일 앞에서 언급한 Request Code Sample 기능은 명세에 따라 자동으로 언어별로 예제 코드가 생성되는데, 좀 더 정확한 가이드를 위해서는 문서 작성자가 직접 예제 코드를 쓰는게 좋을 것 같다.
 
-## AI 관련 기능 이모저모
+## AI 관련 기능 요약
 
 ReadMe 만큼 AI 관련한 기능을 열심히 제공해주는 문서화 관련 프로덕트나 SSG는 없는 것 같다. 지금도 실시간으로 AI 관련 기능이 업데이트 되고있다. AI 관련 기능은 적극적으로 사용해보지는 않고, [ReadMe Docs | AI](https://docs.readme.com/main/docs/aiagent)에 명세된 각각의 항목들을 읽어보았다.
 
@@ -175,7 +175,9 @@ ReadMe 만큼 AI 관련한 기능을 열심히 제공해주는 문서화 관련 
 - **LLMs.txt**: robots.txt와 비슷한 개념인데, AI 모델이 해당 사이트를 어떻게 의미론적(semantic)으로 이해해야하고 최적화해야하는지 정의해놓은 텍스트이다. 미리 정의해놓아야 LLM이 결과를 생성하는 데에 도움을 준다.
 - **Ask AI & AI Dropdown**: 문서의 내용에 대해 간편하게 LLM에 질문할 수 있도록 하는 기능
 
-10월 8일자로 올라온 [유튜브 영상](https://www.youtube.com/watch?v=LJFhqaUAYoY)은 5분 이내의 영상으로 ReadMe를 이용한 문서화에 AI를 활용하는 내용을 쇼케이스로서 잘 보여주고 있다.
+최근 10월 8일자로 올라온 [유튜브 영상](https://www.youtube.com/watch?v=LJFhqaUAYoY)은 5분 이내의 영상으로 ReadMe를 이용한 문서화에 AI를 활용하는 내용을 쇼케이스로서 잘 보여주고 있다.
+
+대부분의 기능이 온라인 에디터에서 사용하도록 되어있어서 코드 에디터를 통한 접근성을 늘려줬으면 좋겠다. 결국 온라인 에디터 환경에서 제공되는 AI 기능이 Cursor나 Windsurf 같은 AI Code Editor와 유사한 기능인데, 코드 에디터에서도 문서화와 관련된 AI 기능이 동작하도록 VS Code Extension 방식이라던지 어떤 방식이든 코드 에디터에서도 AI 기능을 제공하는게 좋을 것 같다.
 
 ## 유료 플랜 & 기능
 
