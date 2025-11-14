@@ -25,9 +25,9 @@ wevm 팀이 개발하는 이런 여러 TypeScript 기반 프로덕트는 블록�
 
 본문에서 주로 다룰 `vocs`는 wevm 팀에서 TypeScript 기반으로 React와 Vite로 동작하는 문서화 프레임워크다.
 
-wevm 팀의 `viem`, Paradigm 주도 개발 프로젝트인 `reth`, `Foundry`, `alloy`도 문서화 프레임워크로 vocs를 사용했다. wevm 팀이나 Paradigm과 관련없는 vocs를 사용한 기타 프로젝트로는 랜딩 프로토콜인 Morpho가 있는 것으로 확인했다. 아무래도 블록체인과 관련된 프로덕트가 vocs를 문서화 프레임워크로 사용할 가능성이 있는 것 같다.
+wevm 팀의 `viem`, Paradigm 주도 개발 프로젝트인 `reth`, `Foundry`, `alloy`도 문서화 프레임워크로 vocs를 사용했다. wevm 팀이나 Paradigm과 관련없는 vocs를 사용한 기타 프로젝트로는 랜딩 프로토콜인 Morpho가 있는 것으로 확인했다.
 
-블록체인과 관련되지 않은 경우에 vocs를 사용한 유명한 프로덕트의 경우는, SSG나 문서화 프레임워크가 많다보니 잘 모르겠는데 아마 높은 확률로 없는 것 같다.
+아무래도 블록체인 관련 툴을 개발한 wevm 팀이 voc를 개발하였기 때문에 블록체인과 관련된 프로덕트가 vocs를 문서화 프레임워크로 사용할 가능성이 있는 것 같다. 블록체인과 관련되지 않은 경우에 굳이 그 많은 SSG나 문서화 프레임워크 중에 vocs를 사용한 프로덕트의 경우는 알려진 바가 없다.
 
 특이 사항으로는 wevm 팀의 [wagmi](https://wagmi.sh/)의 경우, [구버전 문서](https://1.x.wagmi.sh/)에는 [`nextra`](https://nextra.site/)를 사용했고, 현재 버전으로는 [`vitePress`](https://vitepress.dev/)를 이용하고 있는 것으로 확인했다. viem의 경우도 기존에 vitePress를 사용했는데, wagmi는 무슨 이유에서인지 아직 vocs로 마이그레이션하진 않았다.
 
@@ -41,20 +41,20 @@ wevm 팀의 `viem`, Paradigm 주도 개발 프로젝트인 `reth`, `Foundry`, `a
 - [Morpho](https://docs.morpho.org/get-started/)
 - 기타 내가 모르는 프로덕트지만 높은 확률로 블록체인과 관련된 프로덕트
 
-아무튼, `vocs`라는 문서화 프레임워크를 보자마자 이건 한 번 간단히라도 사용해보고 싶다는 생각이 굴뚝같이 들었는데 그 이유는:
+아무튼, `vocs`라는 문서화 프레임워크를 보자마자 한 번 간단히라도 사용해보고 싶다는 생각이 굴뚝같이 들었는데 그 이유는:
 
 - `web3.js`나 `ethers.js`를 사용하면서 느끼던 타입에 대한 갈증을 `viem`을 통해 시원하게 해갈한 경험이 있었다. 그 `viem`을 개발한 wevm 팀이 vocs를 개발했고, `viem`의 문서도 vocs를 통해 생성되었다.
 - Paradigm이 wevm 팀과 vocs를 후원한다.
   - Paradigm은 개인적으로 매력을 느끼는 언어인 Rust 언어로 작성 된 이더리움 클라이언트 `reth`를 개발하고 유지 보수하여 이더리움 클라이언트 다양성 확보에 기여하고 있다.
   - Paradigm은 이제는 [`hardhat`](https://hardhat.org/)보다 대중적으로 쓰이는 Smart Contract 개발 프레임워크인 `Foundry`를 개발하고 유지 보수하고 있다.
 
-이렇듯 vocs는 하이프있고 개발자 친화적이면서 심지어 직접 개발도 하는 리서치 VC에서 후원하고 있다. 이런 이유로만 vocs를 사용해보고자 마음먹은게 Hype-Driven-Development 내지는 Hype-Driven-Documentation은 아니라고 자신할 수 있다. wevm 팀과 Paradigm 에서 제공하는 다른 프로덕트를 사용해본 경험(viem, Foundry)이 실제로 좋았기 때문이다.
+이렇듯 vocs는 하이프있고 개발자 친화적이면서 심지어 직접 개발도 하는 리서치 VC에서 후원하고 있다. 이런 이유로만 vocs를 사용해보고자 마음먹은 것이 Hype-Driven-Development 내지는 Hype-Driven-Documentation은 아니라고 자신할 수 있다. wevm 팀과 Paradigm 에서 제공하는 다른 프로덕트를 사용해본 경험(viem, Foundry)이 실제로 좋았기 때문이다.
 
 ## x402
 
 vocs의 기능을 알아보기 위해 무엇을 문서화 해볼까 고민하다가, 최근에 화제가 되는 온체인 결제 관련 내러티브인 [**x402**](https://x402.org) 문서를 clone-documenting 해보기로 했다.
 
-x402는 Coinbase 주도로 개발된 온체인 결제 프로토콜로, HTTP 402 상태 코드를 활용한다. [HTTP 402 Payments Required](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/402) 상태 코드는 수 십년 간 활용되지 않던 것인데, 이를 활용한다는 것이 특징이다. x402 문서를 vocs로 clone-documenting하면서 기존 영문 문서를 번역하여 다루어 보았기 때문에 이 포스트에서는 x402에 대한 자세한 설명은 줄인다. vocs를 이용하여 빌드하고 [github pages](https://gloomydumber.github.io/vocs-coinbase-x402-documentation-clone)에 배포하는 등의 과정에서 x402에 대해 조사하고 명세를 번역하고 윤문하였다.
+x402는 Coinbase 주도로 개발된 온체인 결제 프로토콜로, HTTP 402 상태 코드를 활용한다. [HTTP 402 Payments Required](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/402) 상태 코드는 수 십년 간 활용되지 않던 것인데, x402 프로토콜은 이를 활용한다. x402 문서를 vocs로 clone-documenting하면서 기존 영문 문서를 번역하여 다루어 보았기 때문에 이 포스트에서는 x402에 대한 자세한 설명은 줄인다. vocs를 이용하여 빌드하고 [github pages](https://gloomydumber.github.io/vocs-coinbase-x402-documentation-clone)에 배포하는 등의 과정에서 x402에 대해 조사하고 명세를 번역하고 윤문하였다.
 
 x402는 Coinbase에서 주도적으로 개발되었지만 대중에 공개된 오픈 프로토콜이기도 해서, 두 개의 문서가 존재한다.
 
@@ -63,7 +63,7 @@ x402는 Coinbase에서 주도적으로 개발되었지만 대중에 공개된 �
 
 `x402.org`의 문서는 커뮤니티에서 유지 보수되는 문서이고 [`GitBook`](https://www.gitbook.com/)을 통해 작성되었다. 반면에 `Coinbase Developer Platform` 문서는 Coinbase 측에서 관리되고, [`Mintlify`](https://www.mintlify.com/)를 통해 작성되었다.
 
-아무래도 커뮤니티에서 관리되는 GitBook으로 작성된 문서는 무료인 Basic-tier 플랜으로 작성되었기 때문에 주목할만한 기능적인 부분이 없어서 Mintlify로 작성된 Coinbase의 문서를 기준으로 vocs를 이용한 clone-documenting을 진행하였다. 예외로 문서의 랜딩 페이지는 오픈소스의 것을 clone-coding하였다.
+아무래도 커뮤니티에서 관리되는 GitBook으로 작성된 문서는 무료인 Basic-tier 플랜으로 작성되었기 때문에 주목할만한 기능적인 부분이 없어서 Mintlify로 작성된 Coinbase의 문서를 기준으로 vocs를 이용한 clone-documenting을 진행하였다. 예외로 문서의 랜딩 페이지의 컴포넌트는 오픈소스의 것을 clone-coding하였다.
 
 ## Features
 
@@ -99,11 +99,11 @@ vocs의 기능에 대해 먼저 알아보았다. 사실 역시 여느 문서화 
 
 ## Translation
 
-vocs의 위와 같은 기능을 바탕으로, 여러 설정을 하고 난뒤에 x402 문서를 번역하여 옮겨적었다. 몇 번 해봤지만 아직 번역 내지는 의역해서 자연스럽게 작성하는 것이 어려운 것 같다.
+vocs의 위와 같은 기능을 바탕으로, 여러 설정을 하고 난뒤에 x402 문서를 번역하여 옮겨적었다. vocs의 기능을 알아보는데 중점을 둬서 구글 번역을 초안으로 어색한 부분만 고쳤다. 이 정도로만 번역을 하는 데도, 아직 번역 내지는 의역해서 자연스럽게 작성하는 것이 어려운 것 같다.
 
 번역 과정에서 '_요청-응답_', '_헤더_', '_페이로드_'와 같은 일반적인 기술 용어는 큰 문제가 되지 않는데, x402 프로토콜에서만 사용되는 용어인 '_Facillitator_' 나, 결제와 정산 등을 표현할 때 쓰이는 '_Payment_', '_Settlement_'와 같은 용어는 신경써서 번역해야 했다.
 
-특히, _Facillitator_ 는 직역하면 _조정자, 중재자, 촉진자, 조력자_ 등 서로 비슷하면서도 다른 의미로 해석될 가능성이 많고, x402 프로토콜 자체에서 쓰이는 기술 용어(terminology)에 가깝다고 생각해 일단 '퍼실리테이터'라고 썼다.
+특히, _Facillitator_ 는 직역하면 _조정자, 중재자, 촉진자, 조력자_ 등 서로 비슷하면서도 다른 의미로 해석될 가능성이 많고, x402 프로토콜 자체에서 쓰이는 기술 용어(terminology)에 가깝다고 생각해 일단 '퍼실리테이터'라고 영문 발음 그대로 한글로 썼다.
 
 _Facillitator_ 는 간략하게 정의하자면, 결제 과정에서 구매자와 판매자 간의 결제가 제대로 이루어지는지 온체인 검증과 정산을 돕는 주체이다. 이를 직역해서 _조정자, 중재자, 촉진자, 조력자_ 라고 번역하기에는 혼란스러울 것 같았다.
 
@@ -177,7 +177,7 @@ jobs:
           publish_branch: gh-pages
 ```
 
-처음에 `checkout` 과정을 `fetch-depth` 값 설정없이 했더니 이전 깃 커밋 내역을 캐싱하지 않고 빌드하여 빌드 할 때마다 문서의 모든 페이지의 최근 수정 시간이 동일하게 빌드 시점으로 갱신되는 문제가 있었다. vocs의 [vocs/src/vite/utilsgetGitTimestamp.ts](https://github.com/wevm/vocs/blob/c00edbe083ada9245da0d635c7735d74231818be/src/vite/utils/getGitTimestamp.ts#L7) 에 따르면 Git Timestamp 기반으로 문서 페이지의 _Last updated_ 항목을 표시해주는 것을 알 수 있다. `fetch-depth` 값을 0으로 제대로 주고나니, 정상적으로 동작하였다.
+처음에 `checkout` 과정을 `fetch-depth` 값 설정없이 했더니 이전 깃 커밋 내역을 캐싱하지 않고 빌드하여 빌드 할 때마다 문서의 모든 페이지의 최근 수정 시간이 동일하게 빌드 시점으로 갱신되는 문제가 있었다. vocs의 [vocs/src/vite/utilsgetGitTimestamp.ts](https://github.com/wevm/vocs/blob/c00edbe083ada9245da0d635c7735d74231818be/src/vite/utils/getGitTimestamp.ts#L7) 에 따르면 Git Commit 이력의 Timestamp 기반으로 문서 페이지의 _Last updated_ 항목을 표시해주는 것을 알 수 있다. `fetch-depth` 값을 0으로 제대로 주고나니, 정상적으로 동작하였다.
 
 ![lastUpdated](img/lastUpdated.png)
 
@@ -211,9 +211,9 @@ Windows 환경에서 `npm init vocs` 명령어를 통해 프로젝트를 부트�
 
 ### ToC 버그
 
-최신 버전에 페이지를 옮기면 새로운 페이지에 맞게 ToC가 변경되지 않는 버그가 있다. 문서의 다른 페이지로 들어가도 기존에 있던 페이지의 ToC가 그대로 표기된다.
+vocs의 최신 버전으로 빌드한 문서에서, 페이지를 옮기면 새로운 페이지에 맞게 ToC가 변경되지 않는 버그가 있다. 문서의 다른 페이지로 들어가도 기존에 있던 페이지의 ToC가 그대로 표기된다.
 
-viem 처럼 비교적 최신 버전을 쓰는 문서들은 해당 문제가 그대로 벌어지는 것을 확인했고, Foundry나 Morpho 처럼 vocs 버전을 업데이트해서 배포하지 않은 문서들은 문제가 없다.
+viem 처럼 비교적 최신 버전을 쓰는 문서들은 해당 문제가 존재하는 것을 확인했고, Foundry나 Morpho 처럼 vocs 버전을 업데이트해서 배포하지 않은 문서들은 문제가 없다.
 
 해당 문제는 [이슈](https://github.com/wevm/vocs/issues/333)로 제출되어 있는 상태다.
 
@@ -229,7 +229,7 @@ viem 처럼 비교적 최신 버전을 쓰는 문서들은 해당 문제가 그�
 
 별도로 컴포넌트를 통해 생성하거나 CSS 설정을 따로 하는 것이 좋을 것 같다.
 
-이에 비해, Coinbase X402 문서에서 사용한 mintlify의 공식 문서에서 [Accordion](https://www.mintlify.com/docs/components/accordions)과 [Table](https://www.mintlify.com/docs/create/list-table#tables)을 확인해봤는데, Coinbase 측에서 따로 설정한 것은 없어보이고 mintlify 기본 디자인 자체가 예쁜 것 같다. mintlify의 Accordion의 경우에는 여러 Accordion 끼리 Group을 만들 수도 있다.
+이에 비해, Coinbase X402 문서에서 사용한 Mintlify의 공식 문서에서 [Accordion](https://www.mintlify.com/docs/components/accordions)과 [Table](https://www.mintlify.com/docs/create/list-table#tables)을 확인해봤는데, Coinbase 측에서 따로 설정한 것은 없어보이고 Mintlify 기본 디자인 자체가 예쁜 것 같다. Mintlify의 Accordion의 경우에는 여러 Accordion 끼리 Group을 만들 수도 있다.
 
 {{ figure(src="./img/vocsTableAndDetail.png", alt="vocsTableAndDetail", caption="vocs의 테이블과 디테일 섹션") }}
 
@@ -254,6 +254,8 @@ Code Group안에 또 다른 Code Group을 두어 탭 속 탭을 지원하지는 
 ### 이미지 클릭시 확대 기능 부재
 
 비교적 간단한 기능임에도 문서에 삽입된 이미지 클릭 시에 확대가 되는 기능이 없다. 이미지에 글자가 있으면 큰 글자가 아닌 이상 읽을 수가 없다. 공식 레포의 [Discussion](https://github.com/wevm/vocs/discussions/176)에 이 문제에 대해 언급되어 있는데, 아무런 대응이 없다.
+
+이미지 확대 기능 마저 컴포넌트로 직접 구현하기에는 공수가 아쉽다.
 
 ## 결론
 
