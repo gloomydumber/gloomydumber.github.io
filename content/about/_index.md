@@ -1,6 +1,6 @@
 +++
 title = "gloomydumber::about"
-description = "Demo collections page of zola-theme-serene"
+description = "gloomydumber::about"
 template = "prose.html"
 
 [extra]
@@ -13,3 +13,5 @@ Studying Computer Science & Engineering, focused on Blockchain, and active in In
 ### Education
 
 - Pusan National University — Computer Science & Engineering (Minor in Economics)
+
+{{ figure(src="./img/attendant.png", alt="attendant", caption="a few of my event passes") }}
