@@ -14,4 +14,4 @@ Studying Computer Science & Engineering, focused on Blockchain, and active in In
 
 - Pusan National University — Computer Science & Engineering (Minor in Economics)
 
-{{ figure(src="./img/attendant.png", alt="attendant", caption="a few of my event passes") }}
+{{ figure(src="/img/attendant.png", alt="attendant", caption="a few of my event passes") }}
