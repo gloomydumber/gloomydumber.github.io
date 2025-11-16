@@ -27,7 +27,7 @@ wevm 팀이 개발하는 이런 여러 TypeScript 기반 프로덕트는 블록�
 
 wevm 팀의 `viem`, Paradigm 주도 개발 프로젝트인 `reth`, `Foundry`, `alloy`도 문서화 프레임워크로 vocs를 사용했다. wevm 팀이나 Paradigm과 관련없는 vocs를 사용한 기타 프로젝트로는 랜딩 프로토콜인 Morpho가 있는 것으로 확인했다.
 
-아무래도 블록체인 관련 툴을 개발한 wevm 팀이 voc를 개발하였기 때문에 블록체인과 관련된 프로덕트가 vocs를 문서화 프레임워크로 사용할 가능성이 있는 것 같다. 블록체인과 관련되지 않은 경우에 굳이 그 많은 SSG나 문서화 프레임워크 중에 vocs를 사용한 프로덕트의 경우는 알려진 바가 없다.
+아무래도 블록체인 관련 툴을 개발한 wevm 팀이 vocs를 개발하였기 때문에 블록체인과 관련된 프로덕트가 vocs를 문서화 프레임워크로 사용할 가능성이 있는 것 같다. 블록체인과 관련되지 않은 경우에 굳이 그 많은 SSG나 문서화 프레임워크 중에 vocs를 사용한 프로덕트의 경우는 알려진 바가 없다.
 
 특이 사항으로는 wevm 팀의 [wagmi](https://wagmi.sh/)의 경우, [구버전 문서](https://1.x.wagmi.sh/)에는 [`nextra`](https://nextra.site/)를 사용했고, 현재 버전으로는 [`vitePress`](https://vitepress.dev/)를 이용하고 있는 것으로 확인했다. viem의 경우도 기존에 vitePress를 사용했는데, wagmi는 무슨 이유에서인지 아직 vocs로 마이그레이션하진 않았다.
 
@@ -264,14 +264,14 @@ Code Group안에 또 다른 Code Group을 두어 탭 속 탭을 지원하지는 
 - **Docs As Code 철학을 행하기 위한 버전 관리와 같은 기능**: 온라인 에디터 기반이 아니라, `npm init vocs` 등으로 직접 설치하여 사용하는 문서화 프레임워크이기 때문에 완전히 Docs As Code 로 관리할 수 있다.
 - **Customizable Component 지원, MDX**: vocs는 이용자가 직접 Vite를 통해 빌드하기 떄문에 컴포넌트를 완전히 자유롭게 구성할 수 있다.
 - **문서 검색 엔진 커스텀화**: 기본적으로 [MiniSearch](https://lucaong.github.io/minisearch/types/MiniSearch.SearchOptions.html)를 사용하여 관련 옵션을 지원하고 Algolia 다른 검색 엔진으로 변경하는 것은 불가능한 것으로 보인다.
-- **i18n과 같은 언어 지원**: 현재는 지원하지 않고, [관련 PR](https://github.com/wevm/vocs/pull/95)이 진행중인 것으로 보이나 머지가 확실하지 않다.
+- **i18n과 같은 다국어 지원**: 현재는 지원하지 않고, [관련 PR](https://github.com/wevm/vocs/pull/95)이 진행중인 것으로 보이나 머지가 확실하지 않다.
 - **빌드 파이프라인**: Vite 기반, remark와 rehype 플러그인을 자유롭게 적용할 수 있다.
 - **호스팅, 배포 용이성**: 가령, `npm run build`를 통해 빌드된 Static 파일들을 어떤 방법이던지 간에 배포하면 된다.
 - **AI 관련 기능** (`llms.txt`, MCP Server): 빌드 시 `llms.txt`를 제공해준다. Vite 플러그인 기능으로 vocs에서는 25년 2월에 도입된 기능인데, 공식 문서에 이에 대한 언급은 없다. 다른 AI 관련 기능으로는 문서마다 _Ask in ChatGPT_ 나, _Copy page for LLMs_ 옵션이 있는 버튼을 선택해서 LLM 이용 용이성을 제공해주는 기능 정도가 있다.
 
 vocs를 선택할 이유라면:
 
-- **완전 무료**: 무료인데도 적당히 심미적이면서 기본적인 기능을 다 갖춤
+- **무료**: 무료 MIT 라이센스이면서도 적당히 심미적이고 기본적인 기능을 다 갖춤
 - **빠르고 가벼움**: Vite로 빌드됨
 - **높은 자유도**: 100% 자유롭게 개발 가능한 커스텀 컴포넌트, 자유로운 remark / rehype 플러그인 설정 가능
 - **블록체인 관련 프로젝트일 경우**: 문서화 도구에 컬처핏을 굳이 따지자면 그나마 Crypto-Native? 내지는 Blockchain-Native한 문서화 도구임
